@@ -26,16 +26,28 @@ public class BallHitDetector
 	public static final int SAMPLE_RATE = 44100;
 	public static final double HIT_THRESHOLD_NORM = 0.4;
 	public static final int SCALE = 10000;
-	public static final int HIT_THRESHOLD = 4400;
+	public static final int HIT_THRESHOLD = 3900;
 	
 	//the minimum gap between two ball hits 1000 (sample rate is 44100)
 	public static final int HITS_GAP = 5000;
 	
 	//the minimum gap between same peak but different correlations
-	public static final int PEAK_GAP = 20000;
+	public static final int PEAK_GAP = 10000;
 	
 	//minimum seconds between two plays;
 	public static final int PLAY_GAP = 8;
+	
+	//
+	public static final int[] breakStyle = new int[] {3, 2, 2, 2, 2};
+	
+	//duration of a short break
+	public static final int SHORT_BREAK = 25;
+	
+	//duration of a long break
+	public static final int LONG_BREAK = 80;
+	
+	// at least 4 plays in a game
+	public static final int LEAST_PLAY_IN_GAME = 4;
 	
 	public static void main(String args[]) throws UnsupportedAudioFileException, IOException {
 		String path_NDBH = "/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/set1/xcorr_ND_backhand.txt";
@@ -58,17 +70,18 @@ public class BallHitDetector
 		List<Integer> hits = getHitmoments(lists);
 		
 		List<int[]> plays = getPlay(hits);
+		List<int[]> games = getGames(plays);
 		long end = System.currentTimeMillis();
 		System.out.println((end - start) / 1000 );
 		outputCSV(hits, "1.csv");
 		outputCSV2(plays, "2.csv");
+		outputCSV2(games, "games.csv");
 		System.out.println(hits.size());
 	}
 	
 	/**
-	 * Try to return all ball hitting moments in the game
-	 * 
-	 * **/
+	 * Try to return all ball hitting moments in the match
+	 ***/
 	public static List<Integer> getHitmoments(List<List<Integer>> peaks) {
 		int size = peaks.size();
 		List<Integer> res = new ArrayList();
@@ -198,6 +211,45 @@ public class BallHitDetector
 		}
 		res.add(new int[] {begin, lastHit});
 		return res;
+	}
+	
+	/**
+	 * Given all the plays, return the start end time of each game.
+	 * **/
+	public static List<int[]> getGames(List<int[]> plays) {
+		List<int[]> res = new ArrayList();
+		List<int[]> tmp = new ArrayList();
+		tmp.add(plays.get(0));
+		int j = 0;
+		
+		for (int i = 1; i < plays.size(); i++) {
+			int[] play = plays.get(i);
+			if (tmp.size() == 0 || play[0] - tmp.get(tmp.size() - 1)[1] > LONG_BREAK * SAMPLE_RATE) {
+				getGamesHelper(tmp, breakStyle[j++], res);
+				tmp.clear();
+			}
+			tmp.add(play);
+		}
+		
+		return res;
+	}
+	
+	/**
+	 * Given the plays, try to split it into numGames games
+	 * **/
+	public static void getGamesHelper(List<int[]> plays, int numGames, List<int[]> res) {
+		int begin = plays.get(0)[0];
+		int last = plays.get(0)[1];
+		int lastIndex = 0;
+		for (int i = 1; i < plays.size(); i++) {
+			int start = plays.get(i)[0];
+			if (start - last > SHORT_BREAK * SAMPLE_RATE && i - lastIndex > LEAST_PLAY_IN_GAME) {
+				res.add(new int[] {begin, last});
+				begin = start;
+			}
+			last = plays.get(i)[1];
+		}
+		res.add(new int[] {begin, last});
 	}
 }
 

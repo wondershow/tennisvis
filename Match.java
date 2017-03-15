@@ -9,5 +9,15 @@ import java.util.List;
 
 public class Match
 {
-	List<Set> sets = new ArrayList();
+	List<Set> sets;
+	
+	public Match() {
+		sets = new ArrayList();
+	}
+	
+	public Set addSet() {
+		Set s = new Set();
+		sets.add(s);
+		return s;
+	}
 }

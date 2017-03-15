@@ -9,5 +9,9 @@ import java.util.List;
 
 public class Game
 {
-	List<Point> points = new ArrayList();
+	List<Point> points;
+	
+	public Game() {
+		points = new ArrayList();
+	}
 }
