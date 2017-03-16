@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Set
 {
-	List<Game> games;
+	public List<Game> games;
 	
 	public Set() {
 		games = new ArrayList();
@@ -19,5 +19,14 @@ public class Set
 		Game g = new Game();
 		games.add(g);
 		return g;
+	}
+	
+	public List<Integer> toList() {
+		List<Integer> res = new ArrayList<Integer>();
+		for (Game g : games) {
+			List<Integer> l = g.toList();
+			res.addAll(l);
+		}
+		return res;
 	}
 }

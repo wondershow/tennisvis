@@ -56,6 +56,7 @@ public class BallHitDetector
 		String path_RFBH = "/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/set1/xcorr_RF_backhand.txt";
 		String path_RFS = "/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/set1/xcorr_RF_serve.txt";
 		String path_RFFH = "/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/set1/xcorr_RF_forehand.txt";
+		String path_p2p_desc = "/Users/leizhang/Desktop/tennis/winbledon/match_stats/winbeldon_2014.pointbypoint.txt";
 		
 		long start = System.currentTimeMillis();
 		
@@ -76,8 +77,13 @@ public class BallHitDetector
 		outputCSV(hits, "1.csv");
 		outputCSV2(plays, "2.csv");
 		outputCSV2(games, "games.csv");
+		Match m = PointToPointParser.parseMatchFacts(path_p2p_desc);
+		alignEachPlay(m, hits);
 		System.out.println(hits.size());
 	}
+	
+	
+	
 	
 	/**
 	 * Try to return all ball hitting moments in the match
@@ -215,7 +221,7 @@ public class BallHitDetector
 	
 	/**
 	 * Given all the plays, return the start end time of each game.
-	 * **/
+	 ***/
 	public static List<int[]> getGames(List<int[]> plays) {
 		List<int[]> res = new ArrayList();
 		List<int[]> tmp = new ArrayList();
@@ -250,6 +256,74 @@ public class BallHitDetector
 			last = plays.get(i)[1];
 		}
 		res.add(new int[] {begin, last});
+	}
+	
+	/**
+	 * Given a serve hit moment, find its end moment(index)
+	 * **/
+	private static int getEndOfPlay(List<Integer> hits, int startIndex) {
+		int res = startIndex;
+		int last = hits.get(res);
+		while (res < hits.size()) {
+			if (hits.get(res) - last > PLAY_GAP * SAMPLE_RATE) {
+				break;
+			}
+			last = hits.get(res);
+			res++;
+		}
+		return res - 1;
+	}
+	
+	/**
+	 * Given the match report(from txt stats input)
+	 * and detected hits, try to align all the 
+	 * **/
+	private static void alignEachPlay(Match m, List<Integer> hits) {
+		int audioStart = 0;
+		
+		//System.out.println(hits.size());
+		while (audioStart < hits.size()) {
+			Point p = m.nextPoint();
+			int shots = p.getShots();
+			System.out.println("shots = " + shots);
+			int audioEnd = getEndOfPlay(hits, audioStart);
+			int audiohits = audioEnd - audioStart + 1;
+			
+			//when the detected acoustic shots equals txt desc
+			if (audiohits == shots) {
+				p.setAligned(true);
+				p.setStart(hits.get(audioStart));
+				p.setEnd(hits.get(audioEnd));
+				// move to next play
+				audioStart = audioEnd + 1;
+			} else {
+				//when acoustic shots more than txt desc
+				if (audiohits > shots) {
+					p.setAligned(true);
+					p.setStart(hits.get(audioStart));
+					p.setEnd(hits.get(audioEnd));
+				} else {
+					int nextPointEnds = getEndOfPlay(hits, audioEnd + 1);
+					int nextPointPlays = nextPointEnds - audioEnd;
+					
+					int gapCur = Math.abs(audiohits - shots);
+					int gapNext = Math.abs(nextPointPlays - shots);
+					
+					if (gapCur < gapNext) { // align point with current acoustic play
+						p.setAligned(true);
+						p.setStart(hits.get(audioStart));
+						p.setEnd(hits.get(audioEnd));
+						audioStart = audioEnd + 1;
+					} else { // align point with next acoustic play
+						p.setAligned(true);
+						p.setStart(hits.get(audioEnd + 1));
+						p.setEnd(hits.get(nextPointEnds));
+						audioStart = nextPointEnds + 1;
+					}
+				}
+			}
+			System.out.println(p.getStart() / 44100 + " - " + p.getEnd() / 44100 );
+		}
 	}
 }
 

@@ -14,4 +14,27 @@ public class Game
 	public Game() {
 		points = new ArrayList();
 	}
+	
+	public void addPoint(Point p) {
+		points.add(p);
+	}
+	
+	/*
+	public String toString() {
+		String StringBuilder sb = new StringBuilder("");
+		
+		for (Point p : points) {
+			
+		}
+		
+		return res
+	}*/
+	
+	public List<Integer> toList() {
+		List<Integer> res = new ArrayList<Integer>();
+		for (Point point : points) {
+			res.add(point.getShots());
+		}
+		return res;
+	}
 }

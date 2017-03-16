@@ -11,7 +11,8 @@ public class PointToPointParser
 {
 	public static void main(String[] args) {
 		String path = "/Users/leizhang/Desktop/tennis/winbledon/match_stats/winbeldon_2014.pointbypoint.txt";
-		parseMatchFacts(path);
+		Match m = parseMatchFacts(path);
+		System.out.println("a");
 	}
 	
 	/**
@@ -28,17 +29,30 @@ public class PointToPointParser
 		    int last = 0, max = 0;
 		    
 		    String lastSet = "", lastGame = "";
-		    Set curSet;
-		    Game curGame;
+		    Set curSet = null;
+		    Game curGame = null;
 		    while ((line = br.readLine()) != null) {
+		    		if (line.length() < 20) continue;
+		    		//System.out.println(line);
 		    		String[] fields = line.split("  + |\\t");
 		    		String player = fields[0];
 		    		String set = fields[1];
-		    		if (!set.equals(lastSet)) {
-		    			curSet = res.addSet()
+		    		if (!set.equals(lastSet) && !set.equals(reverse(lastSet))) {
+		    			curSet = res.addSet();
+		    			lastSet = set;
+		    			//System.out.println(lastSet);
 		    		}
 		    		
+		    		String game = fields[2];
+		    		if (!game.equals(lastGame)) {
+		    			curGame = curSet.addGame();
+		    			lastGame = game;
+		    		}
 		    		
+		    		parseScoreDesc(curGame, fields[4]);
+		    		
+		    		//String gameScore = fields[3];
+		    		//String scoreDesc = fields[4];
 		    }
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -46,13 +60,55 @@ public class PointToPointParser
 		return res;
 	}
 	
+	private static void parseScoreDesc(Game g, String descTxt) {
+		if (descTxt.toLowerCase().contains("double fault")) {
+			handleFault(g);
+			handleFault(g);
+			return;
+		}
+		if (descTxt.toLowerCase().contains("fault")) {
+			handleFault(g);
+			int pos = descTxt.indexOf("fault");
+			while (pos < descTxt.length() && descTxt.charAt(pos) != '.') pos++;
+			descTxt = descTxt.substring(pos);
+		}
+		Point p = new Point();
+		int shots = getRallyShots(descTxt);
+		p.setShots(shots);
+		g.addPoint(p);
+	}
+	
+	private static void handleFault(Game g) {
+		Point p = new Point();
+		p.setFault();
+		p.setShots(1);
+		g.addPoint(p);
+	}
+	
 	/***
 	 * return how many shots in this play
 	 * */
-	private static int getRallyShots() {
+	private static int getRallyShots(String text) {
+		int pos = text.indexOf("-shot rally");
+		if (pos > 0) {
+			int p = pos - 1;
+			while (p >= 0 && Character.isDigit(text.charAt(p))) p--;
+			int shots = Integer.parseInt(text.substring(p + 1, pos));
+			return shots;
+		}
+		int res = 1;
+		for (int i = 0; i < text.length(); i++)
+			if (text.charAt(i) == ';') res++;
 		
+		return res;
+	}
+	
+	private static String reverse(String txt) {
+		String res = "";
 		
+		for (int i = txt.length() - 1; i >= 0; i--)
+			res += txt.charAt(i);
 		
-		
+		return res;
 	}
 }
