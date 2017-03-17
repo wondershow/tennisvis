@@ -9,6 +9,31 @@ public class Point
 	private int startTime, endTime;
 	private int rallyShots, game, set;
 	private boolean audioAligned, serveFault;
+	private int pointNo;
+	private int gameNo, setNo;
+	
+	public Point () {
+		
+	}
+	
+	public void setOrder(int[] orders) {
+		setNo = orders[0];
+		gameNo = orders[1];
+		pointNo = orders[2];
+	}
+	
+	public int getPointOrder() {
+		return pointNo;
+	}
+	
+	public int getGameOrder() {
+		return gameNo;
+	}
+	
+	public int getSetOrder() {
+		return setNo;
+	}
+	
 	
 	public void setFault() {
 		serveFault = true;

@@ -12,13 +12,12 @@ public class Match
 	List<Set> sets;
 	private int lastset = 0, lastgame = 0, lastpoint = 0, total = 0; 
 	
-	
 	public Match() {
 		sets = new ArrayList();
 	}
 	
 	public Set addSet() {
-		Set s = new Set();
+		Set s = new Set(sets.size());
 		sets.add(s);
 		return s;
 	}

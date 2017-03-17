@@ -9,17 +9,21 @@ import java.util.List;
 
 public class Set
 {
+	private int setNo;
 	public List<Game> games;
 	
-	public Set() {
+	public Set(int order) {
+		setNo = order;
 		games = new ArrayList();
 	}
 	
 	public Game addGame() {
-		Game g = new Game();
+		Game g = new Game(games.size());
+		g.setSetOrder(setNo);
 		games.add(g);
 		return g;
 	}
+	
 	
 	public List<Integer> toList() {
 		List<Integer> res = new ArrayList<Integer>();
