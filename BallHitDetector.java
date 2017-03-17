@@ -22,33 +22,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  */
 
 public class BallHitDetector
-{
-	public static final int SAMPLE_RATE = 44100;
-	public static final double HIT_THRESHOLD_NORM = 0.4;
-	public static final int SCALE = 10000;
-	public static final int HIT_THRESHOLD = 3900;
-	
-	//the minimum gap between two ball hits 1000 (sample rate is 44100)
-	public static final int HITS_GAP = 5000;
-	
-	//the minimum gap between same peak but different correlations
-	public static final int PEAK_GAP = 10000;
-	
-	//minimum seconds between two plays;
-	public static final int PLAY_GAP = 8;
-	
-	//
-	public static final int[] breakStyle = new int[] {3, 2, 2, 2, 2};
-	
-	//duration of a short break
-	public static final int SHORT_BREAK = 25;
-	
-	//duration of a long break
-	public static final int LONG_BREAK = 80;
-	
-	// at least 4 plays in a game
-	public static final int LEAST_PLAY_IN_GAME = 4;
-	
+{	
 	public static void main(String args[]) throws UnsupportedAudioFileException, IOException {
 		String path_NDBH = "/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/set1/xcorr_ND_backhand.txt";
 		String path_NDS = "/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/set1/xcorr_ND_serve.txt";
@@ -110,7 +84,7 @@ public class BallHitDetector
 			for (int i = 0; i < size; i++) {
 				if (cursors[i] < peaks.get(i).size()) {
 					int val = peaks.get(i).get(cursors[i]);
-					if (Math.abs(minTime - val) < PEAK_GAP) {
+					if (Math.abs(minTime - val) < Constants.PEAK_GAP) {
 						cursors[i]++;
 						votes++;
 					}
@@ -138,10 +112,10 @@ public class BallHitDetector
 		    while ((line = br.readLine()) != null) {
 		    		// process the line.
 		    		int a = Math.abs(Integer.parseInt(line.trim()));
-		    		if (a > HIT_THRESHOLD) {
+		    		if (a > Constants.HIT_THRESHOLD) {
 		    			if (res.size() == 0) {
 		    				res.add(cur);
-		    			} else if (cur - last > HITS_GAP) {
+		    			} else if (cur - last > Constants.HITS_GAP) {
 		    				res.add(cur);
 		    			}
 		    			last = cur;
@@ -209,7 +183,7 @@ public class BallHitDetector
 		int lastHit = hits.get(0);
 		int begin = lastHit;
 		for (int i = 1; i < hits.size(); i++) {
-			if (hits.get(i) - lastHit > SAMPLE_RATE * PLAY_GAP) {
+			if (hits.get(i) - lastHit > Constants.SAMPLE_RATE * Constants.PLAY_GAP) {
 				res.add(new int[] {begin, lastHit});
 				begin = hits.get(i);
 			}
@@ -230,8 +204,9 @@ public class BallHitDetector
 		
 		for (int i = 1; i < plays.size(); i++) {
 			int[] play = plays.get(i);
-			if (tmp.size() == 0 || play[0] - tmp.get(tmp.size() - 1)[1] > LONG_BREAK * SAMPLE_RATE) {
-				getGamesHelper(tmp, breakStyle[j++], res);
+			if (tmp.size() == 0 || 
+				play[0] - tmp.get(tmp.size() - 1)[1] > Constants.LONG_BREAK * Constants.SAMPLE_RATE) {
+				getGamesHelper(tmp, Constants.breakStyle[j++], res);
 				tmp.clear();
 			}
 			tmp.add(play);
@@ -249,7 +224,7 @@ public class BallHitDetector
 		int lastIndex = 0;
 		for (int i = 1; i < plays.size(); i++) {
 			int start = plays.get(i)[0];
-			if (start - last > SHORT_BREAK * SAMPLE_RATE && i - lastIndex > LEAST_PLAY_IN_GAME) {
+			if (start - last > Constants.SHORT_BREAK * Constants.SAMPLE_RATE && i - lastIndex > Constants.LEAST_PLAY_IN_GAME) {
 				res.add(new int[] {begin, last});
 				begin = start;
 			}
@@ -265,7 +240,7 @@ public class BallHitDetector
 		int res = startIndex;
 		int last = hits.get(res);
 		while (res < hits.size()) {
-			if (hits.get(res) - last > PLAY_GAP * SAMPLE_RATE) {
+			if (hits.get(res) - last > Constants.PLAY_GAP * Constants.SAMPLE_RATE) {
 				break;
 			}
 			last = hits.get(res);
