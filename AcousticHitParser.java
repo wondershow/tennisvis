@@ -45,21 +45,26 @@ public class AcousticHitParser
 	}
 	
 	/**
-	 * Align a few games
+	 * Align a few games with hits moment
 	 * */
 	private void alignGames(List<Integer> h, List<Game> games) {
-		
 		int gamesInAcoustic = 1;
 		int begin = 0;
 		System.out.print("fact " + games.size() + "games : ");
-		for (int i = 1; i < h.size() ; i++) {
+		
+		List<Integer> acusticGames = new ArrayList();
+		for (int i = 1; i < h.size(); i++) {
 			if (h.get(i) - h.get(i - 1) > Constants.SAMPLE_RATE * Constants.SHORT_BREAK) {
-				System.out.print(BallHitDetector.toHMS(h.get(begin)) 
-						+ " - " + BallHitDetector.toHMS(h.get(i - 1)) + ",");
 				begin = i;
+				acusticGames.add(i - begin);
 				gamesInAcoustic++;
 			}
+			
+			if (i == h.size() - 1) {
+				acusticGames.add(i - begin);
+			}
 		}
+		
 		System.out.println();
 		
 		List<AcousticPlay> list;
@@ -80,10 +85,15 @@ public class AcousticHitParser
 			int start = 0;
 			int gameCur = 0;
 			
-			//for (Game)
+			for (Game g : games) {
+				System.out.println("Shots in " + (g.gameNo + 1) + " : " + g.getTotalShots());
+			}
+			
+			debugPrintHitBreaks(h);
+			
 			for (int i = 1; i < h.size() && gameCur < games.size(); i++) {
 				if (h.get(i) - h.get(i - 1) > Constants.SAMPLE_RATE * Constants.SHORT_BREAK 
-					&& games.get(gameCur).getTotalShots() - (i - start) < 10) {
+					&& games.get(gameCur).getTotalShots() - (i - start) < 5) {
 					list = getPlay(h.subList(start, i - 1));
 					alignGame(list, games.get(gameCur++));
 					start = i;
@@ -95,6 +105,24 @@ public class AcousticHitParser
 		}
 	}
 	
+	private void debugPrintHitBreaks(List<Integer> h) {
+		int begin = 0;
+		for (int i = 1; i < h.size() ; i++) {
+			if (h.get(i) - h.get(i - 1) > Constants.SAMPLE_RATE * Constants.SHORT_BREAK) {
+				System.out.println(BallHitDetector.toHMS(h.get(begin)) 
+						+ " - " + BallHitDetector.toHMS(h.get(i - 1)) + "," + (i - 1 - begin) + "shots");
+				begin = i;
+			}
+			if (i == h.size() - 1) {
+				System.out.println(BallHitDetector.toHMS(h.get(begin)) 
+						+ " - " + BallHitDetector.toHMS(h.get(i)) + "," + (i - begin) + "shots");
+			}
+		}
+	}
+	
+	/**
+	 * Align hit moments with in a game.
+	 * ***/
 	private void alignGame(List<AcousticPlay> plays, Game g) {
 		//while (true) {
 		//int order = 0, max = 0;
