@@ -94,6 +94,7 @@ public class PointToPointParser
 			int p = pos - 1;
 			while (p >= 0 && Character.isDigit(text.charAt(p))) p--;
 			int shots = Integer.parseInt(text.substring(p + 1, pos));
+			if (text.indexOf("error") > 0) shots++;
 			return shots;
 		}
 		int res = 1;

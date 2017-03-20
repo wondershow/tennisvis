@@ -43,24 +43,26 @@ public class Game
 		return s;
 	}
 	
+	
+	
+	
 	public int getTotalShots() {
 		int res = 0;
 		for (Point p : this.points) 
 			res += p.getShots();
-		
 		return res;
 	}
 	
-	/*
+	
 	public String toString() {
-		String StringBuilder sb = new StringBuilder("");
-		
+		StringBuilder sb = new StringBuilder("");
+		sb.append("Game " + this.gameNo + " : \n");
 		for (Point p : points) {
-			
+			sb.append(p.toString() + "\n");
 		}
 		
-		return res
-	}*/
+		return sb.toString();
+	}
 	
 	public List<Integer> toList() {
 		List<Integer> res = new ArrayList<Integer>();

@@ -49,4 +49,18 @@ public class Set
 		}
 		return res;
 	}
+	
+	public int getTotalShots() {
+		int res = 0;
+		for (Game g : games) {
+			res += g.getTotalShots();
+		}
+		return res;
+	}
+	
+	public void printSet() {
+		for (Game g : games) {
+			System.out.println(g.toString());
+		}
+	}
 }

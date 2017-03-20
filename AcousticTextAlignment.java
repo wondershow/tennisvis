@@ -13,7 +13,8 @@ public class AcousticTextAlignment
 	public static void main(String[] args) {
 		///*
 		int[] acustic = new int[] {21, 6, 15, 11, 16};
-		int[] texts = new int[] {26, 31, 14};
+		int[] texts = new int[] {28, 31, 14};
+		
 		//*/
 		
 		/*
