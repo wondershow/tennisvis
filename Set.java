@@ -24,12 +24,28 @@ public class Set
 		return g;
 	}
 	
-	
 	public List<Integer> toList() {
 		List<Integer> res = new ArrayList<Integer>();
 		for (Game g : games) {
 			List<Integer> l = g.toList();
 			res.addAll(l);
+		}
+		return res;
+	}
+	
+	//index from 0 
+	public List<Game> getGames(int from, int to) {
+		List<Game> res = new ArrayList();
+		for (int i = from; i <= to; i++) {
+			res.add(games.get(i));
+		}
+		return res;
+	}
+	
+	public String outputAlignment() {
+		String res = "";
+		for (Game g : games) {
+			res += g.outputAlignment() + "\n";
 		}
 		return res;
 	}

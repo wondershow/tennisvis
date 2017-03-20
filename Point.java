@@ -71,4 +71,8 @@ public class Point
 	public void setAligned(boolean b) {
 		this.audioAligned = b;
 	}
+	
+	public boolean getAligned() {
+		return this.audioAligned;
+	}
 }

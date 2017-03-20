@@ -24,6 +24,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class BallHitDetector
 {	
 	public static void main(String args[]) throws UnsupportedAudioFileException, IOException {
+		/*
 		String path_NDBH = "/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/set1/xcorr_ND_backhand.txt";
 		String path_NDS = "/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/set1/xcorr_ND_serve.txt";
 		String path_NDFH = "/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/set1/xcorr_ND_forehand.txt";
@@ -31,9 +32,6 @@ public class BallHitDetector
 		String path_RFS = "/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/set1/xcorr_RF_serve.txt";
 		String path_RFFH = "/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/set1/xcorr_RF_forehand.txt";
 		String path_p2p_desc = "/Users/leizhang/Desktop/tennis/winbledon/match_stats/winbeldon_2014.pointbypoint.txt";
-		
-		long start = System.currentTimeMillis();
-		
 		List<List<Integer>> lists = new ArrayList();
 		lists.add(getPeaks(path_NDBH));
 		lists.add(getPeaks(path_NDS));
@@ -41,8 +39,12 @@ public class BallHitDetector
 		lists.add(getPeaks(path_RFBH));
 		lists.add(getPeaks(path_RFS));
 		lists.add(getPeaks(path_RFFH));
+		List<Integer> hits = getHitmoments(lists); */
 		
-		List<Integer> hits = getHitmoments(lists);
+		String path_p2p_desc = "/Users/leizhang/Desktop/tennis/winbledon/match_stats/winbeldon_2014.pointbypoint.txt";
+		String hitPath = "/Users/leizhang/Documents/workspace/TennisVis/1.csv";
+		List<Integer> hits = loadHitMoments(hitPath);
+		long start = System.currentTimeMillis();
 		
 		List<int[]> plays = getPlay(hits);
 		List<int[]> games = getGames(plays);
@@ -52,7 +54,9 @@ public class BallHitDetector
 		outputCSV2(plays, "2.csv");
 		outputCSV2(games, "games.csv");
 		Match m = PointToPointParser.parseMatchFacts(path_p2p_desc);
-		alignEachPlay(m, hits);
+		AcousticHitParser ap = new AcousticHitParser();
+		ap.alignSet(hits, m);
+		//alignEachPlay(m, hits);
 		System.out.println(hits.size());
 	}
 	
@@ -99,7 +103,7 @@ public class BallHitDetector
 	}
 	
 	/***
-	 * Given the cross-correlation of a  signal, 
+	 * Given the cross-correlation of a signal, 
 	 * return all the peak moments of that cross correlation
 	 * */
 	public static List<Integer> getPeaks(String path) {
@@ -133,8 +137,8 @@ public class BallHitDetector
 		try {
 			PrintWriter pw = new PrintWriter(new File(fileName));
 			for (Integer i : list) {
-				pw.write(toHMS(i));// + ",");
-				//pw.write(i + " ");
+				//pw.write(toHMS(i));// + ",");
+				pw.print(i);
 				pw.print("\n");
 			}
 			pw.close();
@@ -177,7 +181,7 @@ public class BallHitDetector
 	 * return the start time and end time of each play
 	 * (from serve to last hit)
 	 * **/
-	public static List<int[]> getPlay(List<Integer> hits) {
+	private static List<int[]> getPlay(List<Integer> hits) {
 		List<int[]> res = new ArrayList();
 		
 		int lastHit = hits.get(0);
@@ -248,6 +252,23 @@ public class BallHitDetector
 		}
 		return res - 1;
 	}
+	
+	
+	private static List<Integer> loadHitMoments(String path) {
+		List<Integer> res = new ArrayList();
+		
+		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+		    String line;
+		    while ((line = br.readLine()) != null) {
+		    		res.add(Integer.parseInt(line.trim()));
+		    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return res;
+	}
+	
 	
 	/**
 	 * Given the match report(from txt stats input)

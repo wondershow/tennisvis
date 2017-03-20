@@ -22,6 +22,10 @@ public class Match
 		return s;
 	}
 	
+	public Set getSet(int setOrder) {
+		return sets.get(setOrder);
+	}
+	
 	
 	public Point nextPoint() {
 		//Point res = sets.get(lastset).games.get(lastgame).points.get(lastpoint)

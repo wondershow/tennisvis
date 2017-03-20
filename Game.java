@@ -31,6 +31,26 @@ public class Game
 		return gameNo;
 	}
 	
+	public String outputAlignment() {
+		String s = "Game " + gameNo + " :";
+		for (Point p : points) {
+			if (p.getAligned()) s += " Y ";
+			else s += " N "; 
+		}
+		
+		s += "(" + points.get(0).getStart() / 44100 + " - " 
+				 + points.get(points.size() - 1).getEnd() / 44100 + ")"; 
+		return s;
+	}
+	
+	public int getTotalShots() {
+		int res = 0;
+		for (Point p : this.points) 
+			res += p.getShots();
+		
+		return res;
+	}
+	
 	/*
 	public String toString() {
 		String StringBuilder sb = new StringBuilder("");

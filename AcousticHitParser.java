@@ -17,8 +17,10 @@ public class AcousticHitParser
 		//hits = h;
 	}
 	
-	public void alignSet(List<Integer> h, Set set) {
-		
+	public void alignSet(List<Integer> h, Match m) {
+		Set firstSet = m.getSet(0);
+		chopHitsInSet(h, firstSet);
+		System.out.println(firstSet.outputAlignment());
 	}
 	
 	//Try to chop hit moments into games
@@ -29,6 +31,8 @@ public class AcousticHitParser
 		for (int i = 0; i < h.size(); i++) {
 			if (i < h.size() - 1 && h.get(i + 1) - h.get(i)
 				> Constants.SAMPLE_RATE * Constants.LONG_BREAK) {
+				int secs = h.get(i) / 44100;
+				System.out.println("Long break : "  + secs / 60 + ":" + secs % 60);
 				alignGames(tmp, set.getGames(gameFrom, gameFrom + Constants.breakStyle[segments] - 1));
 				gameFrom = gameFrom + Constants.breakStyle[segments++];
 				tmp.clear();
@@ -46,17 +50,23 @@ public class AcousticHitParser
 	private void alignGames(List<Integer> h, List<Game> games) {
 		
 		int gamesInAcoustic = 1;
+		int begin = 0;
+		System.out.print("fact " + games.size() + "games : ");
 		for (int i = 1; i < h.size() ; i++) {
 			if (h.get(i) - h.get(i - 1) > Constants.SAMPLE_RATE * Constants.SHORT_BREAK) {
+				System.out.print(BallHitDetector.toHMS(h.get(begin)) 
+						+ " - " + BallHitDetector.toHMS(h.get(i - 1)) + ",");
+				begin = i;
 				gamesInAcoustic++;
 			}
 		}
-		List<AcousticPlay> list;
+		System.out.println();
 		
+		List<AcousticPlay> list;
 		if (gamesInAcoustic == games.size()) {
 			int start = 0;
 			int gameCur = 0;
-			for (int i = 1; i < h.size(); i++) {
+			for (int i = 1; i < h.size() && gameCur < games.size(); i++) {
 				if (h.get(i) - h.get(i - 1) > Constants.SAMPLE_RATE * Constants.SHORT_BREAK) {
 					list = getPlay(h.subList(start, i - 1));
 					alignGame(list, games.get(gameCur++));
@@ -67,18 +77,22 @@ public class AcousticHitParser
 				}
 			}
 		} else {
-			for (int i = 1; i < h.size(); i++) {
-				if (h.get(i) - h.get(i - 1) > Constants.SAMPLE_RATE * Constants.SHORT_BREAK) {
-					
+			int start = 0;
+			int gameCur = 0;
+			
+			//for (Game)
+			for (int i = 1; i < h.size() && gameCur < games.size(); i++) {
+				if (h.get(i) - h.get(i - 1) > Constants.SAMPLE_RATE * Constants.SHORT_BREAK 
+					&& games.get(gameCur).getTotalShots() - (i - start) < 10) {
+					list = getPlay(h.subList(start, i - 1));
+					alignGame(list, games.get(gameCur++));
+					start = i;
+					if (gameCur == games.size() - 2) {
+						alignGame(getPlay(h.subList(start, h.size() - 1)), games.get(gameCur));
+					}
 				}
 			}
-			
-			
-			
 		}
-		
-		
-		
 	}
 	
 	private void alignGame(List<AcousticPlay> plays, Game g) {
@@ -110,6 +124,7 @@ public class AcousticHitParser
 					g.points.get(j).setAligned(true);
 					g.points.get(j).setStart(p.getStart());
 					g.points.get(j).setEnd(p.getEnd());
+					j++;
 				}
 			} else { // play hits lower than p.shots
 				AcousticPlay nextAP = plays.get(j + 1);
