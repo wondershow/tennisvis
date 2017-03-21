@@ -75,4 +75,10 @@ public class Point
 	public boolean getAligned() {
 		return this.audioAligned;
 	}
+	
+	public String toString() {
+		String res = "";
+		res = "Set " + (setNo) + " Game " + (gameNo) + " Point " + this.pointNo + " : " + this.getShots(); 
+		return res;
+	}
 }

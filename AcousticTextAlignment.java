@@ -27,13 +27,16 @@ public class AcousticTextAlignment
 		for (int i = 0; i < acustic.length; i++) l1.add(acustic[i]);
 		for (int i = 0; i < texts.length; i++) l2.add(texts[i]);
 		
-		List<Integer> res = align(l1, l2);
+		List<Integer> res = alignGames2(l1, l2);
 		System.out.println(res.size());
 		for (int i : res) {
 			System.out.println(res);
 		}
 	}
 	
+	
+	private static int minCost;
+	private static List<Integer> res;
 	/**
 	 * Problem Statement: Given two inputs, acousticGames and textGames
 	 *    each contains how many ball hits in each GAME, try to align
@@ -44,18 +47,22 @@ public class AcousticTextAlignment
 	 *      game 1 and game 2 in  acousticGames making it [28, 31, 28].
 	 *         
 	 * **/
-	private static int minCost;
-	private static List<Integer> res;
-	public static List<Integer> align(List<Integer> acousticGames, List<Integer> textGames) {
-		if (acousticGames.size() == textGames.size()) return acousticGames;
-		List<Integer> path = new ArrayList<Integer>();
+	private static List<Integer> alignGames2(List<Integer> acousticGames, List<Integer> textGames) {
 		minCost = Integer.MAX_VALUE;
 		res = new ArrayList();
-		helper(acousticGames, textGames, path, 0);
+		List<Integer> path = new ArrayList<Integer>();
+		alignGames2Helper(acousticGames, textGames, path, 0);
 		return res;
 	}
 	
-	private static void helper(List<Integer> acousticGames, List<Integer> textGames, List<Integer> cur, int index1) {
+	public static List<Integer> alignGames(List<Integer> acousticGames, List<Game> games) {
+		if (acousticGames.size() == games.size()) return acousticGames;
+		List<Integer> textGames = new ArrayList<Integer>();
+		for (Game g : games) textGames.add(g.getTotalShots());
+		return alignGames2(acousticGames, textGames);
+	}
+	
+	private static void alignGames2Helper(List<Integer> acousticGames, List<Integer> textGames, List<Integer> cur, int index1) {
 		if (index1 == acousticGames.size()) {
 			if (cur.size() == textGames.size()) {
 				int cost = 0;
@@ -70,12 +77,28 @@ public class AcousticTextAlignment
 			return;
 		}
 		
+		if (cur.size()  >= textGames.size()) return;
+		
 		int sum = 0;
 		for (int i = index1; i < acousticGames.size(); i++) {
 			sum += acousticGames.get(i);
 			cur.add(sum);
-			helper(acousticGames, textGames, cur, i + 1);
+			alignGames2Helper(acousticGames, textGames, cur, i + 1);
 			cur.remove(cur.size() - 1);
 		}
 	}
+	
+	/*
+	private static List<Integer> alignment(List<Integer> acousticGames, List<Integer> textGames) {
+		minCost = Integer.MAX_VALUE;
+		res = new ArrayList();
+		List<Integer> path = new ArrayList<Integer>();
+		helper(acousticGames, textGames, path, 0);
+		return res;
+	}*/
+	
+	public static List<Integer> alignGame(List<Integer> acousticPlays, Game game) {
+		
+	}
+	
 }

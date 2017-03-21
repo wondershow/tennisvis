@@ -42,6 +42,14 @@ public class Set
 		return res;
 	}
 	
+	public List<Game> getGames(int from) {
+		List<Game> res = new ArrayList();
+		for (int i = from; i < games.size(); i++) {
+			res.add(games.get(i));
+		}
+		return res;
+	}
+	
 	public String outputAlignment() {
 		String res = "";
 		for (Game g : games) {

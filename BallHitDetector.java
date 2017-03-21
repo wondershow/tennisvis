@@ -58,17 +58,14 @@ public class BallHitDetector
 		long end = System.currentTimeMillis();
 		System.out.println((end - start) / 1000 );
 		Match m = PointToPointParser.parseMatchFacts(path_p2p_desc);
-		m.getSet(0).printSet();
+		//m.getSet(0).printSet();
 		//System.out.println(m.getSet(0).getTotalShots());
 		
-		//AcousticHitParser ap = new AcousticHitParser();
-		//ap.alignSet(hits, m);
+		AcousticHitParser ap = new AcousticHitParser();
+		ap.alignSet(hits, m);
 		//alignEachPlay(m, hits);
 		//System.out.println(hits.size());
 	}
-	
-	
-	
 	
 	/**
 	 * Try to return all ball hitting moments in the match
