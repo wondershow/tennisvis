@@ -72,11 +72,17 @@ public class AcousticHitParser
 		                     + games.get(i).getTotalShots() + " vs " + acusticGames.get(i));
 		}
 		
+		
 		int cur = 0;
 		for (int i = 0; i < games.size(); i++) {
 			List<Integer> hits = h.subList(cur, cur + acusticGames.get(i) - 1);
-			
-			AcousticTextAlignment.alignGame(, games.get(i));
+			List<AcousticPlay> plays = getPlay(hits);
+			AcousticTextAlignment.alignGame(plays, games.get(i));
+			for (Point p : games.get(i).points) {
+				System.out.println(p.getSetOrder() + " : " + p.getGameOrder() + " : " + p.getPointOrder()
+				+ " : ("+ p.getAligned() +") : " + BallHitDetector.toHMS(p.getStart()) +
+				" ---->  " +  BallHitDetector.toHMS(p.getEnd()));
+			}
 			cur = cur + acusticGames.get(i);
 		}
 	}
@@ -95,7 +101,6 @@ public class AcousticHitParser
 			}
 		}
 	}
-	
 	
 	/*
 	public static List<Integer> getPlayHits(List<Integer> hits) {

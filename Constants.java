@@ -18,6 +18,8 @@ public class Constants
 	//the minimum gap between two ball hits 1000 (sample rate is 44100)
 	public static final int HITS_GAP = 5000;
 	
+	public static final int MAX_HITS_GAP = 53000; // around 1.2 secs
+	
 	//the minimum gap between same peak but different correlations
 	public static final int PEAK_GAP = 10000;
 	

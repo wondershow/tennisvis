@@ -272,59 +272,6 @@ public class BallHitDetector
 		
 		return res;
 	}
-	
-	
-	/**
-	 * Given the match report(from txt stats input)
-	 * and detected hits, try to align all the 
-	 * **/
-	private static void alignEachPlay(Match m, List<Integer> hits) {
-		int audioStart = 0;
-		
-		//System.out.println(hits.size());
-		while (audioStart < hits.size()) {
-			Point p = m.nextPoint();
-			int shots = p.getShots();
-			System.out.println("shots = " + shots);
-			int audioEnd = getEndOfPlay(hits, audioStart);
-			int audiohits = audioEnd - audioStart + 1;
-			
-			//when the detected acoustic shots equals txt desc
-			if (audiohits == shots) {
-				p.setAligned(true);
-				p.setStart(hits.get(audioStart));
-				p.setEnd(hits.get(audioEnd));
-				// move to next play
-				audioStart = audioEnd + 1;
-			} else {
-				//when acoustic shots more than txt desc
-				if (audiohits > shots) {
-					p.setAligned(true);
-					p.setStart(hits.get(audioStart));
-					p.setEnd(hits.get(audioEnd));
-				} else {
-					int nextPointEnds = getEndOfPlay(hits, audioEnd + 1);
-					int nextPointPlays = nextPointEnds - audioEnd;
-					
-					int gapCur = Math.abs(audiohits - shots);
-					int gapNext = Math.abs(nextPointPlays - shots);
-					
-					if (gapCur < gapNext) { // align point with current acoustic play
-						p.setAligned(true);
-						p.setStart(hits.get(audioStart));
-						p.setEnd(hits.get(audioEnd));
-						audioStart = audioEnd + 1;
-					} else { // align point with next acoustic play
-						p.setAligned(true);
-						p.setStart(hits.get(audioEnd + 1));
-						p.setEnd(hits.get(nextPointEnds));
-						audioStart = nextPointEnds + 1;
-					}
-				}
-			}
-			System.out.println(p.getStart() / 44100 + " - " + p.getEnd() / 44100 );
-		}
-	}
 }
 
 
