@@ -98,15 +98,16 @@ public class AcousticTextAlignment
 	}*/
 	
 	//
+	private static List<Integer> res1;
 	public static void alignGame(List<AcousticPlay> plays, Game textGame) {
 		List<Integer> path = new ArrayList<Integer>();
-		List<Integer> res = new ArrayList();
+		//List<Integer> res = new ArrayList();
 		int[] cost = new int[] {Integer.MAX_VALUE};
-		alignGameHelper(plays, textGame.points, path, 0, cost, res);
+		alignGameHelper(plays, textGame.points, path, 0, cost);
 		
 		int cur = 0;
 		for (int i = 0; i < textGame.points.size(); i++) {
-			int len = res.get(i);
+			int len = res1.get(i);
 			if (len > 0) {
 				textGame.points.get(i).setAligned(true);
 				textGame.points.get(i).setStart(plays.get(cur).begin);
@@ -117,37 +118,37 @@ public class AcousticTextAlignment
 		//return res;
 	}
 	
-	private static void alignGameHelper(List<AcousticPlay> plays, List<Point> points, List <Integer> path, int index, int[] cost, List<Integer> res) {
-		System.out.println(path);
-		if (index == plays.size()) {
-			if (path.size() == points.size()) {
-				int thisCost = computeCost(path, plays, points);
-				if (thisCost < cost[0]) {
-					cost[0] = thisCost;
-					res = new ArrayList(path);
-				}
+	private static void alignGameHelper(List<AcousticPlay> plays, List<Point> points, List <Integer> path, int index, int[] cost) {
+		//System.out.println(points.size() + " " + index +" : " + path);
+		if (path.size() == points.size()) {
+			int thisCost = computeCost(path, plays, points);
+			if (thisCost < cost[0]) {
+				cost[0] = thisCost;
+				res1 = new ArrayList(path);
 			}
 			return;
 		}
 		if (path.size() >= points.size()) return;
 		int j = path.size();
-		for (int i = index; i < plays.size(); i++) {
+		for (int i = index; i <= plays.size(); i++) {
 			int size = i - index;
 			if (size > 0) {
 				int duration = plays.get(i - 1).end - plays.get(index).begin;
 				int rallyShots = points.get(j).getShots();
-				if (duration > (rallyShots - 1) * Constants.MAX_HITS_GAP) {
-					System.out.println("Duration too large size = " + size + ", index = " + index);
+				if (duration > 3 * (rallyShots - 1) * Constants.MAX_HITS_GAP) {
+					//System.out.println("Duration too large size = " + size + ", index = " + index);
+					//System.out.println((i - 1) + "th play in audio tries align with " + j + "th text point");
 					break;
 				}
 			}
 			path.add(size);
-			alignGameHelper(plays, points, path, i + 1, cost, res);
+			alignGameHelper(plays, points, path, i, cost);
 			path.remove(path.size() - 1);
 		}
 	}
 	
 	private static int computeCost(List <Integer> path, List<AcousticPlay> plays, List<Point> points) {
+		//System.out.println("asdf");
 		int cost = 0;
 		int cur = 0;
 		for (int i = 0; i < path.size(); i++) {
