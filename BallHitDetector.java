@@ -44,11 +44,12 @@ public class BallHitDetector
 		String path_p2p_desc = "/Users/leizhang/Desktop/tennis/winbledon/match_stats/winbeldon_2014.pointbypoint.txt";
 		String hitPath = "/Users/leizhang/Documents/workspace/TennisVis/1.csv";
 		List<Integer> hits = loadHitMoments(hitPath);
+		
 		/*
 		for (int i = 0; i < 100; i++) {
 			System.out.println(i + " hit : " + toHMS(hits.get(i)));
-		}
-		*/
+		}*/
+		
 		
 		
 		long start = System.currentTimeMillis();

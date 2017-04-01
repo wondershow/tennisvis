@@ -88,21 +88,21 @@ public class AcousticTextAlignment
 		}
 	}
 	
-	/*
-	private static List<Integer> alignment(List<Integer> acousticGames, List<Integer> textGames) {
-		minCost = Integer.MAX_VALUE;
-		res = new ArrayList();
-		List<Integer> path = new ArrayList<Integer>();
-		helper(acousticGames, textGames, path, 0);
-		return res;
-	}*/
 	
-	//
 	private static List<Integer> res1;
+	/**
+	 * Align audio hits and text points within a game.
+	 ***/
 	public static void alignGame(List<AcousticPlay> plays, Game textGame) {
 		List<Integer> path = new ArrayList<Integer>();
-		//List<Integer> res = new ArrayList();
 		int[] cost = new int[] {Integer.MAX_VALUE};
+		
+		/*
+		System.out.println("Game hit points in audio :");
+		for (AcousticPlay p : plays) 
+			System.out.println(p.toString());*/
+		
+		
 		alignGameHelper(plays, textGame.points, path, 0, cost);
 		
 		int cur = 0;
@@ -115,11 +115,10 @@ public class AcousticTextAlignment
 			}
 			cur += len;
 		}
-		//return res;
 	}
 	
+	
 	private static void alignGameHelper(List<AcousticPlay> plays, List<Point> points, List <Integer> path, int index, int[] cost) {
-		//System.out.println(points.size() + " " + index +" : " + path);
 		if (path.size() == points.size()) {
 			int thisCost = computeCost(path, plays, points);
 			if (thisCost < cost[0]) {
@@ -135,11 +134,28 @@ public class AcousticTextAlignment
 			if (size > 0) {
 				int duration = plays.get(i - 1).end - plays.get(index).begin;
 				int rallyShots = points.get(j).getShots();
-				if (duration > 3 * (rallyShots - 1) * Constants.MAX_HITS_GAP) {
-					//System.out.println("Duration too large size = " + size + ", index = " + index);
-					//System.out.println((i - 1) + "th play in audio tries align with " + j + "th text point");
+				
+				//make sure the duration is not too long ()
+				/*
+				if (duration > Constants.AUDIO_TXT_MAX_DURATION.get(rallyShots)) {
 					break;
-				}
+				}*/
+				
+				/*
+				if (duration < Constants.AUDIO_TXT_MIN_DURATION.get(rallyShots)) {
+					break;
+				}*/
+				
+				/**
+				//make sure the duration is not too short ()
+				int max_diff = (int)(Constants.AUDIO_TXT_MIN_DURATION.get(rallyShots)
+						   * (double)Constants.SAMPLE_RATE);
+				
+				max_diff = Integer.MAX_VALUE;
+				if (Math.abs((rallyShots - 1) * Constants.MAX_HITS_GAP - duration) >= 
+					max_diff) {
+					break;
+				}**/
 			}
 			path.add(size);
 			alignGameHelper(plays, points, path, i, cost);
@@ -151,16 +167,22 @@ public class AcousticTextAlignment
 		//System.out.println("asdf");
 		int cost = 0;
 		int cur = 0;
+		int misMatch = 0;
 		for (int i = 0; i < path.size(); i++) {
 			int len = path.get(i);
 			int aHits = 0;
 			for (int j = cur; j < cur + len; j++) {
 				aHits += plays.get(j).hits;
 			}
-			cost += Math.abs(points.get(i).getShots() - aHits);
+			if (aHits == 0) misMatch++;
+			if (points.get(i).getShots() == 1 && (aHits == 1 || aHits == 2)) 
+				cost += 0;
+			else
+				cost += Math.abs(points.get(i).getShots() - aHits);
 			cur = cur + len;
 		}
-		
+		//punish for mismatch
+		cost += misMatch;
 		return cost;
 	}
 }

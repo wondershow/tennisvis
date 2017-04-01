@@ -11,6 +11,7 @@ public class Point
 	private boolean audioAligned, serveFault;
 	private int pointNo;
 	private int gameNo, setNo;
+	private String start, end;
 	
 	public Point () {
 		
@@ -78,7 +79,12 @@ public class Point
 	
 	public String toString() {
 		String res = "";
-		res = "Set " + (setNo) + " Game " + (gameNo) + " Point " + this.pointNo + " : " + this.getShots(); 
+		res = "Set " + (setNo) + " Game " + (gameNo) + " Point " 
+		             + this.pointNo + " : " + this.getShots()
+		             + ", from = " + BallHitDetector.toHMS(startTime)
+		             + ", to = " + BallHitDetector.toHMS(endTime);
 		return res;
 	}
+	
+	//private String getDuration()
 }

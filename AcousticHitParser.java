@@ -29,7 +29,7 @@ public class AcousticHitParser
 		int segments = 0;
 		int gameFrom = 0;
 		for (int i = 0; i < h.size(); i++) {
-			if (i < h.size() - 1 && h.get(i + 1) - h.get(i)
+			if (i > 0 && h.get(i) - h.get(i - 1)
 				> Constants.SAMPLE_RATE * Constants.LONG_BREAK) {
 				int secs = h.get(i) / 44100;
 				System.out.println("Long break : "  + secs / 60 + ":" + secs % 60);
@@ -47,9 +47,11 @@ public class AcousticHitParser
 	
 	/**
 	 * Align a few games with hits moment
+	 * Given hit moments of a few games, try to chop hit moments into sections 
+	 * and allocate each section into a game.
+	 * 
 	 * */
 	private void alignGames(List<Integer> h, List<Game> games) {
-		int gamesInAcoustic = 1;
 		int begin = 0;
 		System.out.print("fact " + games.size() + "games : ");
 		
@@ -67,6 +69,9 @@ public class AcousticHitParser
 		
 		List<Integer> acusticGames = AcousticTextAlignment.alignGames(acusticGamesSize, games);
 		
+		
+		System.out.println("acusticGames size = " + acusticGames.size() 
+		                   + ", text game size = " + games.size());
 		for (int i = 0; i < acusticGames.size(); i++) {
 			System.out.println(games.get(i).getOrder() + " : " 
 		                     + games.get(i).getTotalShots() + " vs " + acusticGames.get(i));
@@ -79,9 +84,15 @@ public class AcousticHitParser
 			List<AcousticPlay> plays = getPlay(hits);
 			AcousticTextAlignment.alignGame(plays, games.get(i));
 			for (Point p : games.get(i).points) {
+				int max_diff = (int)(Constants.AUDIO_TXT_MIN_DURATION.get(p.getShots())
+						   * (double)Constants.SAMPLE_RATE);
+				
+				int duration = (p.getEnd() - p.getStart());
+				double secs = (double)(p.getEnd() - p.getStart()) / (double)44100;
 				System.out.println(p.getSetOrder() + " : " + p.getGameOrder() + " : " + p.getPointOrder()
 				+ " : ("+ p.getAligned() +") : " + BallHitDetector.toHMS(p.getStart()) +
-				" ---->  " +  BallHitDetector.toHMS(p.getEnd()));
+				" ---->  " +  BallHitDetector.toHMS(p.getEnd()) + " " + p.getShots()
+				+ ", duration = " + duration + ", secs = " + secs);
 			}
 			cur = cur + acusticGames.get(i);
 		}

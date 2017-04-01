@@ -12,11 +12,33 @@ public class AcousticPlay
 	public int begin, end, hits;
 	public List<Integer> plays;
 	public boolean aligned = false;
+	public String startTime, endTime;
 	
 	public AcousticPlay (List<Integer> moments) {
 		hits = moments.size();
 		begin = moments.get(0);
 		end = moments.get(hits - 1);
+		startTime = BallHitDetector.toHMS(begin);
+		endTime = BallHitDetector.toHMS(end);
 		plays = new ArrayList(moments);
+	}
+	
+	private String moments() {
+		StringBuilder sb = new StringBuilder("");
+		int i = 0;
+		for (int moment : plays) {
+			sb.append( i + " : "  + moment + " : " 
+		     + BallHitDetector.toHMS(moment) + ". ");
+			i++;
+		}
+		sb.setLength(0);
+		return sb.toString();
+	}
+	
+	
+	public String toString() {
+		return startTime + " : " + endTime + ", " + plays.size() + " shots "
+			   + (end - begin) + ", secs = " 
+				+ ((double) (end - begin) / (double)44100) + "\n" + moments() + "\n";
 	}
 }
