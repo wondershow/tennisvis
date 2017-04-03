@@ -24,6 +24,7 @@ public class AcousticTextAlignment
 		
 		List<Integer> l1 = new ArrayList();
 		List<Integer> l2 = new ArrayList();
+		
 		for (int i = 0; i < acustic.length; i++) l1.add(acustic[i]);
 		for (int i = 0; i < texts.length; i++) l2.add(texts[i]);
 		
@@ -33,7 +34,6 @@ public class AcousticTextAlignment
 			System.out.println(res);
 		}
 	}
-	
 	
 	private static int minCost;
 	private static List<Integer> res;
@@ -96,7 +96,7 @@ public class AcousticTextAlignment
 	public static void alignGame(List<AcousticPlay> plays, Game textGame) {
 		List<Integer> path = new ArrayList<Integer>();
 		int[] cost = new int[] {Integer.MAX_VALUE};
-		
+		if (textGame.getOrder() >= 10) return;
 		/*
 		System.out.println("Game hit points in audio :");
 		for (AcousticPlay p : plays) 

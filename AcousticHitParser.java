@@ -37,7 +37,7 @@ public class AcousticHitParser
 				gameFrom = gameFrom + Constants.breakStyle[segments++];
 				tmp.clear();
 			}
-			if (segments == 4) {
+			if (segments == 2) {
 				alignGames(h.subList(i, h.size() - 1), set.getGames(gameFrom));
 				break;
 			}
@@ -55,6 +55,7 @@ public class AcousticHitParser
 		int begin = 0;
 		System.out.print("fact " + games.size() + "games : ");
 		
+		
 		List<Integer> acusticGamesSize = new ArrayList<Integer>();
 		
 		for (int i = 1; i < h.size(); i++) {
@@ -66,6 +67,8 @@ public class AcousticHitParser
 				acusticGamesSize.add(i - begin + 1);
 			}
 		}
+		
+		List<AcousticGame> agList = AcousticGame.chopIntoAcusticGames(h);
 		
 		List<Integer> acusticGames = AcousticTextAlignment.alignGames(acusticGamesSize, games);
 		

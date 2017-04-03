@@ -50,8 +50,6 @@ public class BallHitDetector
 			System.out.println(i + " hit : " + toHMS(hits.get(i)));
 		}*/
 		
-		
-		
 		long start = System.currentTimeMillis();
 		
 		//List<int[]> plays = getPlay(hits);
@@ -64,8 +62,7 @@ public class BallHitDetector
 		
 		AcousticHitParser ap = new AcousticHitParser();
 		ap.alignSet(hits, m);
-		//alignEachPlay(m, hits);
-		//System.out.println(hits.size());
+		HoorayRater.rate(m);
 	}
 	
 	/**
@@ -257,7 +254,6 @@ public class BallHitDetector
 		}
 		return res - 1;
 	}
-	
 	
 	private static List<Integer> loadHitMoments(String path) {
 		List<Integer> res = new ArrayList();
