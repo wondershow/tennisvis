@@ -33,7 +33,7 @@ public class Match
 		Set s = sets.get(lastset);
 		Game g = s.games.get(lastgame);
 		Point res = g.points.get(lastpoint);
-		System.out.println(total + ":" + lastset + " : " + lastgame + " : " + lastpoint +  ":" + g.points.size());
+		//System.out.println(total + ":" + lastset + " : " + lastgame + " : " + lastpoint +  ":" + g.points.size());
 		lastpoint++;
 		total++;
 		if (lastpoint == g.points.size()) {

@@ -12,6 +12,7 @@ public class Point
 	private int pointNo;
 	private int gameNo, setNo;
 	private String start, end;
+	private int hooray;
 	
 	public Point () {
 		
@@ -75,6 +76,14 @@ public class Point
 	
 	public boolean getAligned() {
 		return this.audioAligned;
+	}
+	
+	public void setHooray(int r) {
+		this.hooray = r;
+	}
+	
+	public int getHooray() {
+		return this.hooray;
 	}
 	
 	public String toString() {
