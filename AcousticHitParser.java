@@ -86,6 +86,8 @@ public class AcousticHitParser
 			List<Integer> hits = h.subList(cur, cur + acusticGames.get(i) - 1);
 			List<AcousticPlay> plays = getPlay(hits);
 			AcousticTextAlignment.alignGame(plays, games.get(i));
+			
+			/*
 			for (Point p : games.get(i).points) {
 				int max_diff = (int)(Constants.AUDIO_TXT_MIN_DURATION.get(p.getShots())
 						   * (double)Constants.SAMPLE_RATE);
@@ -96,7 +98,7 @@ public class AcousticHitParser
 				+ " : ("+ p.getAligned() +") : " + BallHitDetector.toHMS(p.getStart()) +
 				" ---->  " +  BallHitDetector.toHMS(p.getEnd()) + " " + p.getShots()
 				+ ", duration = " + duration + ", secs = " + secs);
-			}
+			}*/
 			cur = cur + acusticGames.get(i);
 		}
 	}

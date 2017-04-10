@@ -50,14 +50,6 @@ public class HoorayRater
 		        		}
 		        		
 		        		count = 0;
-		        		
-		        		
-		        		//if (count > 0)
-			        //System.out.println(track + " : " + sample + " : " + count + " : " + sampleSum / count);
-
-		        		//System.out.println(sample + " : " + hooray + " : ");
-		        		
-		        		
 		        		//either the track tag is true or the time is within 5 secs
 				    //after the last hit of that point
 		        		if (hooray < 250 && sample > p.getEnd() + Constants.SAMPLE_RATE * 5 ) {
@@ -93,8 +85,5 @@ public class HoorayRater
 		        sc.close();
 		    }
 		}
-		
-		
-		
 	}
 }

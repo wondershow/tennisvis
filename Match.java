@@ -16,6 +16,13 @@ public class Match
 		sets = new ArrayList();
 	}
 	
+	public void reset() {
+		lastset = 0;
+		lastgame = 0;
+		lastpoint = 0;
+		total = 0;
+	} 
+	
 	public Set addSet() {
 		Set s = new Set(sets.size());
 		sets.add(s);

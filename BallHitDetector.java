@@ -39,7 +39,8 @@ public class BallHitDetector
 		lists.add(getPeaks(path_RFBH));
 		lists.add(getPeaks(path_RFS));
 		lists.add(getPeaks(path_RFFH));
-		List<Integer> hits = getHitmoments(lists); */
+		List<Integer> hits = getHitmoments(lists);
+		*/
 		
 		String path_p2p_desc = "/Users/leizhang/Desktop/tennis/winbledon/match_stats/winbeldon_2014.pointbypoint.txt";
 		String hitPath = "/Users/leizhang/Documents/workspace/TennisVis/1.csv";
@@ -63,6 +64,41 @@ public class BallHitDetector
 		AcousticHitParser ap = new AcousticHitParser();
 		ap.alignSet(hits, m);
 		HoorayRater.rate(m);
+		
+		m.reset();
+		Point p = m.nextPoint();
+		
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		
+		while (p != null) {
+			if (p.getGameOrder() == 0 && p.getPointOrder() == 0) {
+				System.out.println("Set " + (p.getSetOrder() + 1)
+				+ ", Game " + (p.getGameOrder() + 1) + ", Point : "
+				+ (p.getPointOrder() + 1));
+				System.out.println();
+			}
+			
+			if (p.getPointOrder() == 0) {
+				System.out.println("Set " + (p.getSetOrder() + 1)
+				+ ", Game " + (p.getGameOrder() + 1) + ", Point : "
+				+ (p.getPointOrder() + 1));
+				System.out.println();
+			}
+			
+			int max_diff = (int)(Constants.AUDIO_TXT_MIN_DURATION.get(p.getShots())
+					   * (double)Constants.SAMPLE_RATE);
+			
+			int duration = (p.getEnd() - p.getStart());
+			double secs = (double)(p.getEnd() - p.getStart()) / (double)44100;
+			System.out.println(p.getSetOrder() + " : " + p.getGameOrder() + " : " + p.getPointOrder()
+			+ " : ("+ p.getAligned() +") : " + BallHitDetector.toHMS(p.getStart()) +
+			" ---->  " +  BallHitDetector.toHMS(p.getEnd()) + " " + p.getShots()
+			+ ", duration = " + duration + ", secs = " + secs + ", rating = " + p.getHooray());
+			p = m.nextPoint();
+		}
 	}
 	
 	/**
