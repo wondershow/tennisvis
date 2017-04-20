@@ -55,7 +55,7 @@ public class HoorayRater
 		        		if (hooray < 250 && sample > p.getEnd() + Constants.SAMPLE_RATE * 5 ) {
 		        			track = false;
 		        			p.setHooray(rating);
-		        			System.out.println(BallHitDetector.toHMS(p.getStart()) + " : " + rating);
+		        			System.out.println(Util.toHMS(p.getStart()) + " : " + rating);
 		        			while (true) {
 		        				p = m.nextPoint();
 		        				if (p == null) break;

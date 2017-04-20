@@ -18,8 +18,8 @@ public class AcousticPlay
 		hits = moments.size();
 		begin = moments.get(0);
 		end = moments.get(hits - 1);
-		startTime = BallHitDetector.toHMS(begin);
-		endTime = BallHitDetector.toHMS(end);
+		startTime = Util.toHMS(begin);
+		endTime = Util.toHMS(end);
 		plays = new ArrayList(moments);
 	}
 	
@@ -28,7 +28,7 @@ public class AcousticPlay
 		int i = 0;
 		for (int moment : plays) {
 			sb.append( i + " : "  + moment + " : " 
-		     + BallHitDetector.toHMS(moment) + ". ");
+		     + Util.toHMS(moment) + ". ");
 			i++;
 		}
 		sb.setLength(0);

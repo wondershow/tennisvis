@@ -90,8 +90,8 @@ public class Point
 		String res = "";
 		res = "Set " + (setNo) + " Game " + (gameNo) + " Point " 
 		             + this.pointNo + " : " + this.getShots()
-		             + ", from = " + BallHitDetector.toHMS(startTime)
-		             + ", to = " + BallHitDetector.toHMS(endTime);
+		             + ", from = " + Util.toHMS(startTime)
+		             + ", to = " + Util.toHMS(endTime);
 		return res;
 	}
 	

@@ -38,6 +38,16 @@ public class Constants
 	//duration of a long break
 	public static final int LONG_BREAK = 80;
 	
+	//duration of a set break
+	/**
+	 * 2014 Wimbeldon final
+	 * set 1 to set 2 :  52:07 to 54:23
+	 * set 2 to set 3 : 1:34:36 to 1:38:40
+	 * set 3 to set 4 : 2:23:38 to 2:26:03
+	 * set 4 to set 5 : 3:13:23 to 3:17:44
+	 ***/
+	public static final int SET_BREAK = 120;
+	
 	// at least 4 plays in a game
 	public static final int LEAST_PLAY_IN_GAME = 4;
 	

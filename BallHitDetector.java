@@ -42,27 +42,28 @@ public class BallHitDetector
 		List<Integer> hits = getHitmoments(lists);
 		*/
 		
+		
+		
+		
 		String path_p2p_desc = "/Users/leizhang/Desktop/tennis/winbledon/match_stats/winbeldon_2014.pointbypoint.txt";
-		String hitPath = "/Users/leizhang/Documents/workspace/TennisVis/1.csv";
-		List<Integer> hits = loadHitMoments(hitPath);
-		
-		/*
-		for (int i = 0; i < 100; i++) {
-			System.out.println(i + " hit : " + toHMS(hits.get(i)));
-		}*/
-		
-		long start = System.currentTimeMillis();
-		
-		//List<int[]> plays = getPlay(hits);
-		//List<int[]> games = getGames(plays);
-		long end = System.currentTimeMillis();
-		System.out.println((end - start) / 1000 );
 		Match m = PointToPointParser.parseMatchFacts(path_p2p_desc);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		for (int i = 0; i < 5; i++) {
+			System.out.println(i + " : " + m.getSet(i).getTotalShots());
+		}
 		//m.getSet(0).printSet();
 		//System.out.println(m.getSet(0).getTotalShots());
 		
 		AcousticHitParser ap = new AcousticHitParser();
-		ap.alignSet(hits, m);
+		ap.alignSet(m);
 		HoorayRater.rate(m);
 		
 		m.reset();
@@ -94,8 +95,8 @@ public class BallHitDetector
 			int duration = (p.getEnd() - p.getStart());
 			double secs = (double)(p.getEnd() - p.getStart()) / (double)44100;
 			System.out.println(p.getSetOrder() + " : " + p.getGameOrder() + " : " + p.getPointOrder()
-			+ " : ("+ p.getAligned() +") : " + BallHitDetector.toHMS(p.getStart()) +
-			" ---->  " +  BallHitDetector.toHMS(p.getEnd()) + " " + p.getShots()
+			+ " : ("+ p.getAligned() +") : " + Util.toHMS(p.getStart()) +
+			" ---->  " +  Util.toHMS(p.getEnd()) + " " + p.getShots()
 			+ ", duration = " + duration + ", secs = " + secs + ", rating = " + p.getHooray());
 			p = m.nextPoint();
 		}
@@ -189,30 +190,13 @@ public class BallHitDetector
 		try {
 			PrintWriter pw = new PrintWriter(new File(fileName));
 			for (int[] times : list) {
-				pw.write(toHMS(times[0]) + "," + toHMS(times[1]));
+				pw.write(Util.toHMS(times[0]) + "," + Util.toHMS(times[1]));
 				pw.print("\n");
 			}
 			pw.close();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	//Covert a moment to hh:mm:ss
-	public static String toHMS(int time) {
-		time = time / 44100;
-		int hour = time / 3600;
-		
-		time = time - hour * 3600;
-		int min = time / 60;
-		
-		int sec = time % 60;
-		
-		String hms = (hour == 0 ? "" : (hour + ":")) 
-					+  (min < 10 ? "0" + min : min)  + ":" 
-					+  (sec < 10 ? "0" + sec : sec);
-		//System.out.println(hms);
-	    return hms;
 	}
 	
 	/**
@@ -289,21 +273,6 @@ public class BallHitDetector
 			res++;
 		}
 		return res - 1;
-	}
-	
-	private static List<Integer> loadHitMoments(String path) {
-		List<Integer> res = new ArrayList();
-		
-		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-		    String line;
-		    while ((line = br.readLine()) != null) {
-		    		res.add(Integer.parseInt(line.trim()));
-		    }
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return res;
 	}
 }
 
