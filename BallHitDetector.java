@@ -42,19 +42,8 @@ public class BallHitDetector
 		List<Integer> hits = getHitmoments(lists);
 		*/
 		
-		
-		
-		
 		String path_p2p_desc = "/Users/leizhang/Desktop/tennis/winbledon/match_stats/winbeldon_2014.pointbypoint.txt";
 		Match m = PointToPointParser.parseMatchFacts(path_p2p_desc);
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		for (int i = 0; i < 5; i++) {
 			System.out.println(i + " : " + m.getSet(i).getTotalShots());

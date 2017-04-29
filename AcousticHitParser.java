@@ -24,8 +24,10 @@ public class AcousticHitParser
 			Set set = m.getSet(i);
 			String hitPath = MatchDetails.wbd_2014final_hitpaths[i];
 			List<Integer> h = loadHitMoments(hitPath, MatchDetails.wbd_2014final_offsets[i]);
+			//System.out.println();
 			chopHitsInSet(h, MatchDetails.wbd_2014final_games[i], set);
 			System.out.println(set.outputAlignment());
+			return;
 		}
 	}
 	
@@ -70,7 +72,7 @@ public class AcousticHitParser
 			if (h.get(i) == 8179923) {
 				System.out.println();
 			}*/
-			
+			if (j >= aux.length) break;
 			if(h.get(i) > aux[j][0] && h.get(i) < aux[j][1]) {
 				tmp.add(h.get(i));
 			} else if (h.get(i) >= aux[j][1]) {

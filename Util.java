@@ -9,6 +9,7 @@ public class Util {
 	 * Convert hh:mm:ss to sample time moment 
 	 ***/
 	public static int toMoments(String hms) {
+		int offset = 3;
 		String[] tmp = hms.split(":");
 		int res = 0;
 		for (int i = 0; i < tmp.length; i++) {
@@ -16,7 +17,7 @@ public class Util {
 			res = res * 60 + cur;
 		}
 		
-		res = res * Constants.SAMPLE_RATE;
+		res = res  * Constants.SAMPLE_RATE;
 		return res;
 	}
 	

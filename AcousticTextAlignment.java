@@ -102,7 +102,10 @@ public class AcousticTextAlignment
 		for (AcousticPlay p : plays) 
 			System.out.println(p.toString());*/
 		
-		
+		if (plays.size() > 18) {
+			System.out.println("Too many plays " + plays.size() + ", skip alignment of this");
+			return;
+		}
 		alignGameHelper(plays, textGame.points, path, 0, cost);
 		
 		int cur = 0;
