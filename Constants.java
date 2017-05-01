@@ -38,6 +38,11 @@ public class Constants
 	//duration of a long break
 	public static final int LONG_BREAK = 80;
 	
+	//
+	public static final String DOC_ROOT = "/Users/"
+			+ "leizhang/Desktop/tennis/winbledon/2014_final/";
+	
+	
 	//duration of a set break
 	/**
 	 * 2014 Wimbeldon final
@@ -97,4 +102,6 @@ public class Constants
 		for (int i = 5; i < 40; i++)
 			AUDIO_TXT_MIN_DURATION.put(i, (i - 2) * MAX_HITS_GAP);
     }
+	
+	
 }

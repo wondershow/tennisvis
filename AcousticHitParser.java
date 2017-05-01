@@ -89,9 +89,10 @@ public class AcousticHitParser
 	
 	/**
 	 * Align a few games with hits moment
-	 * Given hit moments of a few games, try to chop hit moments into sections 
+	 * Given hit moments of a few games,
+	 * try to chop hit moments into sections
 	 * and allocate each section into a game.
-	 * */
+	 **/
 	private void alignGames(List<Integer> h, List<Game> games) {
 		int begin = 0;
 		System.out.print("fact " + games.size() + "games : ");

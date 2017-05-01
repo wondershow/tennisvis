@@ -24,23 +24,6 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class BallHitDetector
 {	
 	public static void main(String args[]) throws UnsupportedAudioFileException, IOException {
-		/*
-		String path_NDBH = "/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/set1/xcorr_ND_backhand.txt";
-		String path_NDS = "/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/set1/xcorr_ND_serve.txt";
-		String path_NDFH = "/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/set1/xcorr_ND_forehand.txt";
-		String path_RFBH = "/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/set1/xcorr_RF_backhand.txt";
-		String path_RFS = "/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/set1/xcorr_RF_serve.txt";
-		String path_RFFH = "/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/set1/xcorr_RF_forehand.txt";
-		String path_p2p_desc = "/Users/leizhang/Desktop/tennis/winbledon/match_stats/winbeldon_2014.pointbypoint.txt";
-		List<List<Integer>> lists = new ArrayList();
-		lists.add(getPeaks(path_NDBH));
-		lists.add(getPeaks(path_NDS));
-		lists.add(getPeaks(path_NDFH));
-		lists.add(getPeaks(path_RFBH));
-		lists.add(getPeaks(path_RFS));
-		lists.add(getPeaks(path_RFFH));
-		List<Integer> hits = getHitmoments(lists);
-		*/
 		
 		String path_p2p_desc = "/Users/leizhang/Desktop/tennis/winbledon/match_stats/winbeldon_2014.pointbypoint.txt";
 		Match m = PointToPointParser.parseMatchFacts(path_p2p_desc);

@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Author: Lei Zhang
  * raymond.zhang.us@gmail.com
@@ -38,5 +43,24 @@ public class Util {
 					+  (sec < 10 ? "0" + sec : sec);
 		//System.out.println(hms);
 	    return hms;
+	}
+	
+	/**
+	 * Load integral numerical values from a csv file, 
+	 * add offset to each value if specified.
+	 ****/
+	public static List<Integer> loadCSVInts(String path, int offset) {
+		List<Integer> res = new ArrayList();
+		
+		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+		    String line;
+		    while ((line = br.readLine()) != null) {
+		    		res.add(Integer.parseInt(line.trim()) + offset);
+		    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return res;
 	}
 }
