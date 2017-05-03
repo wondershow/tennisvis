@@ -80,6 +80,14 @@ public class MatchDetails
 			}
 		};
 		
+		public static final int[][] wbd_2014final_sets = new int[][] {
+			new int[] {Util.toMoments("0:0:0"), Util.toMoments("0:52:08")},
+			new int[] {Util.toMoments("0:54:17"), Util.toMoments("1:34:40")},
+			new int[] {Util.toMoments("1:38:40"), Util.toMoments("2:23:37")},
+			new int[] {Util.toMoments("2:26:16"), Util.toMoments("3:13:29")},
+			new int[] {Util.toMoments("3:17:45"), Util.toMoments("3:57:01")},
+		};
+		
 		public static final String[] wbd_2014final_hitpaths = new String[] {
 				"/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/1.csv",
 				"/Users/leizhang/Desktop/tennis/winbledon/xcorr_res/2.csv",

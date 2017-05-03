@@ -36,7 +36,7 @@ public class Constants
 	public static final int SHORT_BREAK = 25;
 	
 	//duration of a long break
-	public static final int LONG_BREAK = 80;
+	public static final int LONG_BREAK = 90;
 	
 	//
 	public static final String DOC_ROOT = "/Users/"

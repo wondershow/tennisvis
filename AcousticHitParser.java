@@ -21,7 +21,7 @@ public class AcousticHitParser
 	
 	public void alignSet(Match m) {
 		for (int i = 0; i < m.sets.size(); i++) {
-			Set set = m.getSet(i);
+			TennisSet set = m.getSet(i);
 			String hitPath = MatchDetails.wbd_2014final_hitpaths[i];
 			List<Integer> h = loadHitMoments(hitPath, MatchDetails.wbd_2014final_offsets[i]);
 			//System.out.println();
@@ -32,7 +32,7 @@ public class AcousticHitParser
 	}
 	
 	//Try to chop hit moments into games
-	private void chopHitsInSet(List<Integer> h, Set set) {
+	private void chopHitsInSet(List<Integer> h, TennisSet set) {
 		List<Integer> tmp = new LinkedList();
 		int segments = 0;
 		int gameFrom = 0;
@@ -57,7 +57,7 @@ public class AcousticHitParser
 	 * if aux == null, auto chop of games otherwise manual chopping
 	 * 
 	 ***/
-	private void chopHitsInSet(List<Integer> h, int[][] aux, Set set) {
+	private void chopHitsInSet(List<Integer> h, int[][] aux, TennisSet set) {
 		if (aux == null) {
 			chopHitsInSet(h, set);
 			return;
@@ -93,7 +93,7 @@ public class AcousticHitParser
 	 * try to chop hit moments into sections
 	 * and allocate each section into a game.
 	 **/
-	private void alignGames(List<Integer> h, List<Game> games) {
+	private void alignGames(List<Integer> h, List<TennisGame> games) {
 		int begin = 0;
 		System.out.print("fact " + games.size() + "games : ");
 		

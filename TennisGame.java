@@ -7,13 +7,13 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game
+public class TennisGame
 {
 	//starts from 0
 	int gameNo, setNo;
 	List<Point> points;
 	
-	public Game(int order) {
+	public TennisGame(int order) {
 		gameNo = order;
 		points = new ArrayList();
 	}

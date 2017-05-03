@@ -63,4 +63,62 @@ public class Util {
 		
 		return res;
 	}
+	
+	/**
+	 * Chop a time serious data into different lists, each 
+	 * list is delimited by a start and end time
+	 * ***/
+	public static List<List<Integer>> chopWithLimits(List<Integer> moments, int[][] limits) { 
+		List<List<Integer>> res = new ArrayList<List<Integer>>();
+		int index = 0;
+		for (int[] limit : limits) {
+			List<Integer> tmp = new ArrayList<Integer>();
+			while (moments.get(index) < limit[0]) index++;
+			while (index < moments.size() && moments.get(index) < limit[1]) {
+				tmp.add(moments.get(index));
+				index++;
+			}
+			res.add(tmp);
+		}
+		return res;
+	}
+	
+	/**
+	 * Given a time serious data, split it into pieces, 
+	 * where each piece(internal list in return value)
+	 * is at least breaktime away from another
+	 * **/
+	public static List<List<Integer>> chopWithGap(List<Integer> rawhits, int breaktime) {
+		List<List<Integer>> res = new ArrayList<List<Integer>>();
+		List<Integer> tmp = new ArrayList<Integer>();
+		tmp.add(rawhits.get(0));
+		int gap = breaktime * Constants.SAMPLE_RATE;
+		for (int i = 1; i < rawhits.size(); i++) {
+			if (rawhits.get(i) - rawhits.get(i - 1) > gap) {
+				res.add(tmp);
+				tmp = new ArrayList<Integer>();
+			}
+			tmp.add(rawhits.get(i));
+		}
+		res.add(tmp);
+		return res;
+	}
+	
+	
+	public static List<List<Integer>> combineMultiSets(List<List<Integer>> list, 
+			List<Integer> setSize) {
+		List<List<Integer>> res = new ArrayList();
+		
+		int index = 0;
+		for (int i = 0; i < setSize.size(); i++) {
+			List<Integer> tmp = new ArrayList();
+			int size = setSize.get(i);
+			for (int j = index; j < index + size; j++) {
+				tmp.addAll(list.get(j));
+			}
+			index += size;
+			res.add(tmp);
+		}
+		return res;
+	}
 }

@@ -140,7 +140,6 @@ public class BallHitDetector
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		return res;
 	}
 	

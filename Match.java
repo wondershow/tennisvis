@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Match
 {
-	List<Set> sets;
+	List<TennisSet> sets;
 	private int lastset = 0, lastgame = 0, lastpoint = 0, total = 0; 
 	
 	public Match() {
@@ -23,13 +23,13 @@ public class Match
 		total = 0;
 	} 
 	
-	public Set addSet() {
-		Set s = new Set(sets.size());
+	public TennisSet addSet() {
+		TennisSet s = new TennisSet(sets.size());
 		sets.add(s);
 		return s;
 	}
 	
-	public Set getSet(int setOrder) {
+	public TennisSet getSet(int setOrder) {
 		return sets.get(setOrder);
 	}
 	
@@ -37,8 +37,8 @@ public class Match
 	public Point nextPoint() {
 		//Point res = sets.get(lastset).games.get(lastgame).points.get(lastpoint)
 		if (lastset == sets.size()) return null;
-		Set s = sets.get(lastset);
-		Game g = s.games.get(lastgame);
+		TennisSet s = sets.get(lastset);
+		TennisGame g = s.games.get(lastgame);
 		Point res = g.points.get(lastpoint);
 		//System.out.println(total + ":" + lastset + " : " + lastgame + " : " + lastpoint +  ":" + g.points.size());
 		lastpoint++;

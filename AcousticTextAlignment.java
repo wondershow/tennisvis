@@ -55,10 +55,10 @@ public class AcousticTextAlignment
 		return res;
 	}
 	
-	public static List<Integer> alignGames(List<Integer> acousticGames, List<Game> games) {
+	public static List<Integer> alignGames(List<Integer> acousticGames, List<TennisGame> games) {
 		if (acousticGames.size() == games.size()) return acousticGames;
 		List<Integer> textGames = new ArrayList<Integer>();
-		for (Game g : games) textGames.add(g.getTotalShots());
+		for (TennisGame g : games) textGames.add(g.getTotalShots());
 		return alignGames2(acousticGames, textGames);
 	}
 	
@@ -93,7 +93,7 @@ public class AcousticTextAlignment
 	/**
 	 * Align audio hits and text points within a game.
 	 ***/
-	public static void alignGame(List<AcousticPlay> plays, Game textGame) {
+	public static void alignGame(List<AcousticPlay> plays, TennisGame textGame) {
 		List<Integer> path = new ArrayList<Integer>();
 		int[] cost = new int[] {Integer.MAX_VALUE};
 		if (textGame.getOrder() >= 10) return;

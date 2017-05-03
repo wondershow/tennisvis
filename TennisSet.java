@@ -7,18 +7,18 @@ import java.util.List;
  * Mar 14, 2017
  */
 
-public class Set
+public class TennisSet
 {
 	private int setNo;
-	public List<Game> games;
+	public List<TennisGame> games;
 	
-	public Set(int order) {
+	public TennisSet(int order) {
 		setNo = order;
 		games = new ArrayList();
 	}
 	
-	public Game addGame() {
-		Game g = new Game(games.size());
+	public TennisGame addGame() {
+		TennisGame g = new TennisGame(games.size());
 		g.setSetOrder(setNo);
 		games.add(g);
 		return g;
@@ -26,7 +26,7 @@ public class Set
 	
 	public List<Integer> toList() {
 		List<Integer> res = new ArrayList<Integer>();
-		for (Game g : games) {
+		for (TennisGame g : games) {
 			List<Integer> l = g.toList();
 			res.addAll(l);
 		}
@@ -34,16 +34,16 @@ public class Set
 	}
 	
 	//index from 0 
-	public List<Game> getGames(int from, int to) {
-		List<Game> res = new ArrayList();
+	public List<TennisGame> getGames(int from, int to) {
+		List<TennisGame> res = new ArrayList();
 		for (int i = from; i <= to; i++) {
 			res.add(games.get(i));
 		}
 		return res;
 	}
 	
-	public List<Game> getGames(int from) {
-		List<Game> res = new ArrayList();
+	public List<TennisGame> getGames(int from) {
+		List<TennisGame> res = new ArrayList();
 		for (int i = from; i < games.size(); i++) {
 			res.add(games.get(i));
 		}
@@ -52,7 +52,7 @@ public class Set
 	
 	public String outputAlignment() {
 		String res = "";
-		for (Game g : games) {
+		for (TennisGame g : games) {
 			res += g.outputAlignment() + "\n";
 		}
 		return res;
@@ -60,14 +60,14 @@ public class Set
 	
 	public int getTotalShots() {
 		int res = 0;
-		for (Game g : games) {
+		for (TennisGame g : games) {
 			res += g.getTotalShots();
 		}
 		return res;
 	}
 	
 	public void printSet() {
-		for (Game g : games) {
+		for (TennisGame g : games) {
 			System.out.println(g.toString());
 		}
 	}

@@ -40,7 +40,7 @@ public class MultiSetCounter
 	
 	public static void countHelper(List<Integer> input, List<Integer> target, 
 			List<Integer> setSize, int index, int[] minCost) {
-			System.out.println(index);
+			//System.out.println(index);
 			if (index == input.size()) {
 				if (setSize.size() == target.size()) {
 					int cost = computeCost(input, target, setSize);
