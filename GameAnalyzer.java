@@ -37,6 +37,7 @@ public class GameAnalyzer
 		for (List<Integer> l : inputPoints) {
 			input.add(l.size());
 		}
+		
 		List<Integer> mset = count(input, target);
 		List<List<Integer>> plays = Util.combineMultiSets(inputPoints, mset);
 		for (int i = 0; i < plays.size(); i++) {
@@ -49,7 +50,6 @@ public class GameAnalyzer
 			}
 			System.out.println(p.toString());
 		}
-		
 	}
 	
 	private List<Integer> count(List<Integer> input, List<Integer> target) {

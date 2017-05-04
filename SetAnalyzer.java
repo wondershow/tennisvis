@@ -50,27 +50,71 @@ public class SetAnalyzer
 		
 		List<Integer> path = count(input, target);
 		List<List<Integer>> combinedCOs = Util.combineMultiSets(inputCOs, path);
-		for (List<Integer> co : combinedCOs) {
-			if (co.size() == 0) System.out.println("skip");
+		System.out.println("Align changeovers in Set " + set.getSetNo());
+		for (int i = 0; i < combinedCOs.size(); i++) {
+			System.out.print("Set " + set.getSetNo() + ", game " + i + " ");
+			List<Integer> co = combinedCOs.get(i);
+			if (co.size() == 0)  System.out.println(" skip ");
 			else
-			System.out.println(Util.toHMS(co.get(0)) + "   to "
+				System.out.println(Util.toHMS(co.get(0)) + "   to "
 					+ Util.toHMS(co.get(co.size() - 1)));
 		}
-		//System.out.println(path);
 	}
 	
-	public void analyzeSet(int[][] limits) { 
+	public void analyzeSet(int[][] limits) {
 		List<List<Integer>> games = Util.chopWithLimits(hits, limits);
 		for (int i = 0; i < games.size(); i++) {
 			
+			GameAnalyzer ga = new GameAnalyzer(games.get(i), 
+									set.games.get(i), 0);
+			ga.analyzeGame();
+			/*
+			List<Integer> hitsInGame = games.get(i);
+			List<List<Integer>> plays = Util.chopWithGap(hits, Constants.PLAY_GAP);
+			List<Integer> input = new ArrayList();
+			for (List<Integer> p : plays) {
+				input.add(p.size());
+			}
+			
+			List<Integer> path = countWithConstrains(input, target);
+			
+			/*
+			List<AcousticPlay> plays = getPlay(game);
+			System.out.println("size of play " + plays.size());
+			AcousticTextAlignment.alignGame(plays, set.games.get(i));*/
 		}
 	}
 	
-	private void analyzeChangeOver() {
+	/**
+	 * return the start time and end time of each play
+	 * (from serve to last hit)
+	 * **/
+	public static List<AcousticPlay> getPlay(List<Integer> hits) {
+		List<AcousticPlay> res = new ArrayList();
 		
+		int lastHit = hits.get(0);
+		int begin = lastHit;
+		List<Integer> hitsInOnePlay = new ArrayList();
+		hitsInOnePlay.add(lastHit);
+		for (int i = 1; i < hits.size(); i++) {
+			if (hits.get(i) - lastHit > Constants.SAMPLE_RATE * Constants.PLAY_GAP) {
+				res.add(new AcousticPlay(hitsInOnePlay));
+				begin = hits.get(i);
+				hitsInOnePlay.clear();
+			}
+			lastHit = hits.get(i);
+			hitsInOnePlay.add(lastHit);
+		}
+		res.add(new AcousticPlay(hitsInOnePlay));
+		return res;
 	}
 	
 	private List<Integer> count(List<Integer> input, List<Integer> target) {
+		MultiSetCounter msc = new MultiSetCounter();
+		return msc.count(input, target);
+	}
+	
+	private List<Integer> countWithConstrains(List<Integer> input, List<Integer> target) {
 		MultiSetCounter msc = new MultiSetCounter();
 		return msc.count(input, target);
 	}

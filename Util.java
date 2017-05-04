@@ -90,6 +90,7 @@ public class Util {
 	 * **/
 	public static List<List<Integer>> chopWithGap(List<Integer> rawhits, int breaktime) {
 		List<List<Integer>> res = new ArrayList<List<Integer>>();
+		if (rawhits.size() == 0) return res;
 		List<Integer> tmp = new ArrayList<Integer>();
 		tmp.add(rawhits.get(0));
 		int gap = breaktime * Constants.SAMPLE_RATE;

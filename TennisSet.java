@@ -71,4 +71,8 @@ public class TennisSet
 			System.out.println(g.toString());
 		}
 	}
+	
+	public int getSetNo() {
+		return setNo;
+	}
 }
