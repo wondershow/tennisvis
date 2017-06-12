@@ -64,10 +64,11 @@ public class SetAnalyzer
 	public void analyzeSet(int[][] limits) {
 		List<List<Integer>> games = Util.chopWithLimits(hits, limits);
 		for (int i = 0; i < games.size(); i++) {
+			List<Integer> game = games.get(i);
 			
-			GameAnalyzer ga = new GameAnalyzer(games.get(i), 
-									set.games.get(i), 0);
+			GameAnalyzer ga = new GameAnalyzer(game, set.games.get(i), 0);
 			ga.analyzeGame();
+			
 			/*
 			List<Integer> hitsInGame = games.get(i);
 			List<List<Integer>> plays = Util.chopWithGap(hits, Constants.PLAY_GAP);

@@ -31,6 +31,7 @@ public class MultiSetCounter
 	 *  the size of the input should be under 20
 	 ***/
 	static List<Integer> countRes;
+	
 	public static List<Integer> count(List<Integer> input, List<Integer> target) {
 		countRes = new ArrayList();
 		int[] minCost = new int[] {Integer.MAX_VALUE};

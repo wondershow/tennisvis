@@ -89,7 +89,7 @@ public class Point
 	public String toString() {
 		String res = "";
 		res = "Set " + (setNo) + " Game " + (gameNo) + " Point " 
-		             + this.pointNo + " : " + this.getShots()
+		             + this.pointNo + " : ("+ this.audioAligned+")" + this.getShots()
 		             + ", from = " + Util.toHMS(startTime)
 		             + ", to = " + Util.toHMS(endTime);
 		return res;

@@ -25,13 +25,19 @@ public class GameAnalyzer
 	}
 	
 	public void analyzeGame() {
+		String fromAndTo = Util.toHMS(hits.get(0)) + " to " + 
+	                       Util.toHMS(hits.get(hits.size() - 1));
+		System.out.println("Analyzing a Game, hits start from " 
+	                       + fromAndTo  + " hits : " +  hits.size());
+		
+		
 		List<Integer> target = new ArrayList();
 		for (int i = 0; i < g.points.size(); i++) {
 			target.add(g.points.get(i).getShots());
 		}
 		
 		List<List<Integer>> inputPoints = 
-				Util.chopWithGap(hits, Constants.SHORT_BREAK);
+				Util.chopWithGap(hits, Constants.PLAY_GAP);
 		
 		List<Integer> input = new ArrayList();
 		for (List<Integer> l : inputPoints) {

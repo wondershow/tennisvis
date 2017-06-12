@@ -64,7 +64,9 @@ public class MatchAnalyzer
 			List<Integer> set = sets.get(i);
 			SetAnalyzer sa = new SetAnalyzer(set, m.getSet(i), 0);
 			sa.analyzeSet();
+			//if (i == 0) {
 			sa.analyzeSet(MatchDetails.wbd_2014final_games[i]);
+			//}
 		}
 	}
 	
