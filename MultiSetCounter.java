@@ -32,14 +32,22 @@ public class MultiSetCounter
 	 ***/
 	static List<Integer> countRes;
 	
-	public static List<Integer> count(List<Integer> input, List<Integer> target) {
+	public static List<Integer> count(List<Integer> input, List<List<Integer>> inputMoments, List<Integer> target) {
 		countRes = new ArrayList();
 		int[] minCost = new int[] {Integer.MAX_VALUE};
-		countHelper(input, target, new ArrayList(), 0, minCost);
+		countHelper(input, inputMoments, target, new ArrayList(), 0, minCost);
 		return countRes;
 	}
 	
-	public static void countHelper(List<Integer> input, List<Integer> target, 
+	public static List<Integer> count(List<Integer> input, List<Integer> target) {
+		countRes = new ArrayList();
+		int[] minCost = new int[] {Integer.MAX_VALUE};
+		countHelper(input, null, target, new ArrayList(), 0, minCost);
+		return countRes;
+	}
+	
+	public static void countHelper(List<Integer> input, 
+			List<List<Integer>> inputMoments, List<Integer> target, 
 			List<Integer> setSize, int index, int[] minCost) {
 			//System.out.println(index);
 			if (index == input.size()) {
@@ -53,11 +61,27 @@ public class MultiSetCounter
 					return;
 				}
 			}
-			if (setSize.size() > target.size()) return;
+			if (setSize.size() >= target.size()) return;
 			for (int i = index; i <= input.size(); i++) {
-				setSize.add(i - index);
-				countHelper(input, target, setSize, i, minCost);
-				setSize.remove(setSize.size() - 1);
+				if (inputMoments != null && i != index) { 
+					//apply the recursion pruning rule
+					List<Integer> hits = inputMoments.get(i - 1);
+					int lastHitMoment = 
+							hits.get(hits.size() - 1);
+					int firstHitMoment = 
+							inputMoments.get(index).get(0);
+					int hitnum = target.get(setSize.size());
+					
+					if (lastHitMoment - firstHitMoment < hitnum * 2 * Constants.SAMPLE_RATE) {
+						setSize.add(i - index);
+						countHelper(input, inputMoments, target, setSize, i, minCost);
+						setSize.remove(setSize.size() - 1);
+					}
+				} else {
+					setSize.add(i - index);
+					countHelper(input, inputMoments, target, setSize, i, minCost);
+					setSize.remove(setSize.size() - 1);
+				}
 			}
 	}
 	

@@ -18,7 +18,7 @@ public class MatchAnalyzer
 		String p2p = Constants.DOC_ROOT + "winbeldon_2014.pointbypoint.txt";
 		String hitsPath = Constants.DOC_ROOT + "moments";
 		MatchAnalyzer ma = new MatchAnalyzer(p2p, hitsPath, 0);
-		ma.analyzeSets();
+		//ma.analyzeSets();
 		ma.analyzeSets(MatchDetails.wbd_2014final_sets);
 	}
 	
@@ -34,9 +34,16 @@ public class MatchAnalyzer
 		List<Integer> target = new ArrayList();
 		for (TennisSet s : m.sets) {
 			target.add(s.getTotalShots());
+			System.out.println(s.getTotalShots());
 		}
 		
 		List<List<Integer>> inputSets = Util.chopWithGap(hits, Constants.SET_BREAK);
+		
+		
+		for (List<Integer> set : inputSets) {
+			System.out.println(set.size());
+		}
+		
 		
 		List<Integer> input = new ArrayList();
 		for (List<Integer> l : inputSets) {
@@ -47,10 +54,11 @@ public class MatchAnalyzer
 		
 		List<List<Integer>> combinedSets = Util.combineMultiSets(inputSets, path);
 		
-		
 		System.out.println("Align each set with MSC algorithm:");
 		for (int i = 0; i < combinedSets.size(); i++) {
 			List<Integer> ls = combinedSets.get(i);
+			int hitsDetected = ls.size();
+			int totalHits = target.get(i);
 			System.out.println("Set " + i + " : "  + Util.toHMS(ls.get(0)) + "   to "
 					+ Util.toHMS(ls.get(ls.size() - 1)));
 		}
@@ -64,8 +72,9 @@ public class MatchAnalyzer
 			List<Integer> set = sets.get(i);
 			SetAnalyzer sa = new SetAnalyzer(set, m.getSet(i), 0);
 			sa.analyzeSet();
+			System.out.println(m.getSet(i).getTotalShots());
 			//if (i == 0) {
-			sa.analyzeSet(MatchDetails.wbd_2014final_games[i]);
+				sa.analyzeSet(MatchDetails.wbd_2014final_games[i]);
 			//}
 		}
 	}

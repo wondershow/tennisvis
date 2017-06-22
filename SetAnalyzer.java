@@ -48,6 +48,10 @@ public class SetAnalyzer
 			input.add(l.size());
 		}
 		
+		for (int i = 0; i < input.size(); i++) {
+			System.out.println(i + ":" + input.get(i));
+		}
+		
 		List<Integer> path = count(input, target);
 		List<List<Integer>> combinedCOs = Util.combineMultiSets(inputCOs, path);
 		System.out.println("Align changeovers in Set " + set.getSetNo());

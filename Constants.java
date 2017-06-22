@@ -30,7 +30,7 @@ public class Constants
 	public static final int PLAY_GAP = 3;
 	
 	//
-	public static final int[] breakStyle = new int[] {3, 2, 2, 2, 2};
+	public static final int[] breakStyle = new int[] {3, 2, 2, 2, 2, 2};
 	
 	//duration of a short break
 	public static final int SHORT_BREAK = 25;

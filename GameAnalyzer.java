@@ -38,13 +38,18 @@ public class GameAnalyzer
 		
 		List<List<Integer>> inputPoints = 
 				Util.chopWithGap(hits, Constants.PLAY_GAP);
+		for (int i = 0; i < inputPoints.size(); i++) {
+			List<Integer> point = inputPoints.get(i);
+			System.out.println(i + ":" + point.size() + " = " + Util.toHMS(point.get(0)) + "-" 
+							+ Util.toHMS(point.get(point.size() - 1)));
+		}
 		
 		List<Integer> input = new ArrayList();
 		for (List<Integer> l : inputPoints) {
 			input.add(l.size());
 		}
 		
-		List<Integer> mset = count(input, target);
+		List<Integer> mset = count(input, inputPoints, target);
 		List<List<Integer>> plays = Util.combineMultiSets(inputPoints, mset);
 		for (int i = 0; i < plays.size(); i++) {
 			List<Integer> play = plays.get(i);
@@ -58,8 +63,8 @@ public class GameAnalyzer
 		}
 	}
 	
-	private List<Integer> count(List<Integer> input, List<Integer> target) {
+	private List<Integer> count(List<Integer> input, List<List<Integer>> inputPoints, List<Integer> target) {
 		MultiSetCounter msc = new MultiSetCounter();
-		return msc.count(input, target);
+		return msc.count(input, inputPoints, target);
 	}
 }

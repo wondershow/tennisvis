@@ -72,11 +72,8 @@ public class MatchDetails
 			new int[] {Util.toMoments("3:35:06"), Util.toMoments("3:36:35")},
 			new int[] {Util.toMoments("3:36:56"), Util.toMoments("3:42:03")},
 			new int[] {Util.toMoments("3:43:42"), Util.toMoments("3:49:41")},
-			new int[] {Util.toMoments("24:17"), Util.toMoments("27:16")},
-			new int[] {Util.toMoments("28:50"), Util.toMoments("33:04")},
-			new int[] {Util.toMoments("33:36"), Util.toMoments("37:36")},
-			new int[] {Util.toMoments("39:09"), Util.toMoments("41:26")},
-			new int[] {Util.toMoments("41:52"), Util.toMoments("52:04")}
+			new int[] {Util.toMoments("3:50:06"), Util.toMoments("3:52:34")},
+			new int[] {Util.toMoments("3:54:12"), Util.toMoments("3:57:01")},
 			}
 		};
 		
