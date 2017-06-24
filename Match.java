@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,10 +8,11 @@ import java.util.List;
  * Mar 14, 2017
  */
 
-public class Match
+public class Match implements Serializable
 {
 	List<TennisSet> sets;
 	private int lastset = 0, lastgame = 0, lastpoint = 0, total = 0; 
+	
 	
 	public Match() {
 		sets = new ArrayList();

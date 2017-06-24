@@ -1,10 +1,12 @@
+import java.io.Serializable;
+
 /**
  * Author: Lei Zhang
  * raymond.zhang.us@gmail.com
  * Mar 14, 2017
  */
 
-public class Point
+public class Point implements Serializable
 {
 	private int startTime, endTime;
 	private int rallyShots, game, set;
@@ -13,9 +15,18 @@ public class Point
 	private int gameNo, setNo;
 	private String start, end;
 	private int hooray;
+	private String txtPoint;
 	
 	public Point () {
 		
+	}
+	
+	public void setTextPoint(String txt) {
+		txtPoint = txt;
+	}
+	
+	public String getTxtPnt() {
+		return txtPoint;
 	}
 	
 	public void setOrder(int[] orders) {

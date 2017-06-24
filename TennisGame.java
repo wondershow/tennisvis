@@ -4,10 +4,11 @@
  * Mar 14, 2017
  */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TennisGame
+public class TennisGame implements Serializable
 {
 	//starts from 0
 	int gameNo, setNo;

@@ -31,6 +31,7 @@ public class PointToPointParser
 		    String lastSet = "", lastGame = "";
 		    TennisSet curSet = null;
 		    TennisGame curGame = null;
+		    int setOdr = 0, gameOdr = 0;
 		    while ((line = br.readLine()) != null) {
 		    		if (line.length() < 20) continue;
 		    		//System.out.println(line);
@@ -40,6 +41,8 @@ public class PointToPointParser
 		    		if (!set.equals(lastSet) && !set.equals(reverse(lastSet))) {
 		    			curSet = res.addSet();
 		    			lastSet = set;
+		    			setOdr++;
+		    			gameOdr = 0;
 		    			//System.out.println(lastSet);
 		    		}
 		    		
@@ -47,9 +50,10 @@ public class PointToPointParser
 		    		if (!game.equals(lastGame)) {
 		    			curGame = curSet.addGame();
 		    			lastGame = game;
+		    			gameOdr++;
 		    		}
 		    		
-		    		parseScoreDesc(curGame, fields[4]);
+		    		parseScoreDesc(curGame, fields[4], fields[3], setOdr, gameOdr);
 		    		
 		    		//String gameScore = fields[3];
 		    		//String scoreDesc = fields[4];
@@ -60,7 +64,7 @@ public class PointToPointParser
 		return res;
 	}
 	
-	private static void parseScoreDesc(TennisGame g, String descTxt) {
+	private static void parseScoreDesc(TennisGame g, String descTxt, String txtPnt, int set, int game) {
 		if (descTxt.toLowerCase().contains("double fault")) {
 			handleFault(g);
 			handleFault(g);
@@ -75,6 +79,8 @@ public class PointToPointParser
 		Point p = new Point();
 		int shots = getRallyShots(descTxt);
 		p.setShots(shots);
+		p.setTextPoint(txtPnt);
+		p.setOrder(new int[]{set, game, 1});
 		g.addPoint(p);
 	}
 	

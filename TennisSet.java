@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Mar 14, 2017
  */
 
-public class TennisSet
+public class TennisSet implements Serializable
 {
 	private int setNo;
 	public List<TennisGame> games;

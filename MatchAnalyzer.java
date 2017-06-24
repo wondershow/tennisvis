@@ -1,3 +1,8 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +17,8 @@ public class MatchAnalyzer
 	String p2pFilePath, hitsFilePath;
 	List<Integer> hits;
 	int offset;
-	Match m; 
+	Match mat; 
+	String ratePath = Constants.DOC_ROOT + "rating";
 	
 	public static void main(String[] args) {
 		String p2p = Constants.DOC_ROOT + "winbeldon_2014.pointbypoint.txt";
@@ -26,13 +32,13 @@ public class MatchAnalyzer
 		offset = ofset;
 		p2pFilePath = p2p;
 		hitsFilePath = hpath;
-		m = PointToPointParser.parseMatchFacts(p2p);
+		mat = PointToPointParser.parseMatchFacts(p2p);
 		hits = Util.loadCSVInts(hpath, ofset);
 	}
 	
 	private void analyzeSets() {
 		List<Integer> target = new ArrayList();
-		for (TennisSet s : m.sets) {
+		for (TennisSet s : mat.sets) {
 			target.add(s.getTotalShots());
 			System.out.println(s.getTotalShots());
 		}
@@ -70,12 +76,31 @@ public class MatchAnalyzer
 		List<List<Integer>> sets = Util.chopWithLimits(hits, limits);
 		for (int i = 0; i < sets.size(); i++) {
 			List<Integer> set = sets.get(i);
-			SetAnalyzer sa = new SetAnalyzer(set, m.getSet(i), 0);
+			SetAnalyzer sa = new SetAnalyzer(set, mat.getSet(i), 0);
 			sa.analyzeSet();
-			System.out.println(m.getSet(i).getTotalShots());
-			//if (i == 0) {
-				sa.analyzeSet(MatchDetails.wbd_2014final_games[i]);
-			//}
+			System.out.println(mat.getSet(i).getTotalShots());
+			sa.analyzeSet(MatchDetails.wbd_2014final_games[i]);
+		}
+		
+		//HoorayRater.printPoints(mat);
+		HoorayRater.rate(mat);
+		
+		mat.reset();
+		FileOutputStream fout;
+		try
+		{
+			fout = new FileOutputStream(ratePath);
+			ObjectOutputStream oos = new ObjectOutputStream(fout);
+			oos.writeObject(mat);
+			
+			
+			FileInputStream streamIn = new FileInputStream(ratePath);
+		    ObjectInputStream objectinputstream = new ObjectInputStream(streamIn);
+		    Match tmp = (Match) objectinputstream.readObject();
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
