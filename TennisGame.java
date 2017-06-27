@@ -40,7 +40,7 @@ public class TennisGame implements Serializable
 		}
 		
 		s += "(" + points.get(0).getStart() / 44100 + " - " 
-				 + points.get(points.size() - 1).getEnd() / 44100 + ")"; 
+				 + points.get(points.size() - 1).getEnd() / 44100 + ") \n"; 
 		return s;
 	}
 	

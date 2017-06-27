@@ -102,7 +102,7 @@ public class Point implements Serializable
 		res = "Set " + (setNo) + " Game " + (gameNo) + " Point " 
 		             + this.pointNo + " : ("+ this.audioAligned+")" + this.getShots()
 		             + ", from = " + Util.toHMS(startTime)
-		             + ", to = " + Util.toHMS(endTime);
+		             + ", to = " + Util.toHMS(endTime) + " score " + this.txtPoint;
 		return res;
 	}
 	
