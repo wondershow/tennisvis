@@ -55,4 +55,20 @@ public class Match implements Serializable
 		}
 		return res;
 	}
+	
+	public void printHighlights() {
+		reset();
+		Point p = this.nextPoint();
+		while (p != null) {
+			
+			///*
+			System.out.println("set: " + p.getSetOrder() + ", game : "
+					+ p.getGameOrder() + ", " + p.getTxtPnt() 
+					+ ", time = " +  Util.toHMS(p.getStart(), 4073));
+			//*/
+			//if (p.getTxtPnt() != null)
+			//	System.out.println(Util.toHMS(p.getStart(), 4073));
+			p = this.nextPoint();
+		}
+	}
 }

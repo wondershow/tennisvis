@@ -102,9 +102,10 @@ public class MatchAnalyzer
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		System.out.println("------");
+		mat.printHighlights();
 	}
-	
-	
 	
 	private List<Integer> count(List<Integer> input, List<Integer> target) {
 		MultiSetCounter msc = new MultiSetCounter();

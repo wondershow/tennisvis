@@ -28,9 +28,10 @@ public class Util {
 	
 	/***
 	 * Covert a moment to hh:mm:ss
+	 * seconds : with seconds of offset 
 	 */
-	public static String toHMS(int time) {
-		time = time / Constants.SAMPLE_RATE;
+	public static String toHMS(int time, int seconds) {
+		time = seconds + time / Constants.SAMPLE_RATE;
 		int hour = time / 3600;
 		
 		time = time - hour * 3600;
@@ -43,6 +44,21 @@ public class Util {
 					+  (sec < 10 ? "0" + sec : sec);
 		//System.out.println(hms);
 	    return hms;
+	}
+	
+	/**
+	 * return sample index
+	 * **/
+	public static int HMS2Sample(String hms) {
+		String[] tmp = hms.split(":");
+		int h = Integer.parseInt(tmp[0]);
+		int m = Integer.parseInt(tmp[1]);
+		int s = Integer.parseInt(tmp[2]);
+		return (h * 3600 + m * 60 + s - 4065) * 44100;
+	}
+	
+	public static String toHMS(int time) {
+		return toHMS(time, 0);
 	}
 	
 	/**
