@@ -38,7 +38,7 @@ public class Constants
 	//duration of a long break
 	public static final int LONG_BREAK = 90;
 	
-	//
+	//where all the input files are located
 	public static final String DOC_ROOT = "/Users/"
 			+ "leizhang/Desktop/tennis/winbledon/2014_final/";
 	
